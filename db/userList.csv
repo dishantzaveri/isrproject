@@ -1,0 +1,5 @@
+username,password_hash,permissions,name,email
+guest,$7$C6..../....cMsNgMXsv9lECbRopUXGdaArqH6VKdu.AjLNV11QS4B$enX1o6wxl2QurZVk4yFqusZEEnRvMK3HncesbfVKtE6,guest,Guest,guest@guest.com
+test,$7$C6..../....cMsNgMXsv9lECbRopUXGdaArqH6VKdu.AjLNV11QS4B$enX1o6wxl2QurZVk4yFqusZEEnRvMK3HncesbfVKtE6,test,Test,test
+admin,$7$C6..../....a9mEE.WH40VzU69kcRXx/JtXxPiz0F1XGLeGsoCty65$kYW29qMCzK59tRoNxwtPvBmb51W4EKfpYD0xTAm2gt9,admin,Admin,Admin
+demo,$7$C6..../....hhPh0d0wdGFXQ8vusF6BWd2TgwIvq7JosqzI3Zxta57$W0SqSO4l82GbfzLhS5ZFuT5vxUw90/W2ujB/Np8v.7D,"root,admin",Demo User,Demo

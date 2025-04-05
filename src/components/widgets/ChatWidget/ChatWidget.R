@@ -1,0 +1,191 @@
+
+askChatGPT <- function(prompt) {
+  response <- httr::POST(
+    url = 'https://api.openai.com/v1/chat/completions', 
+    httr::add_headers(Authorization = paste("Bearer", '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')),
+    httr::content_type_json(),
+    encode = "json",
+    body = list(
+      model = "gpt-3.5-turbo",
+      messages = list(
+        list(role = 'system', content = "
+          You are an experienced financial fraud investigator specializing in insider trading.
+          You are leading a team of junior investigators in investigating insider trading.
+          You are to answer queries of other investigators truthfully.
+          You are based in Monetary Authority of Singapore and your answers and reasonings should be based on Singapore's law and the SGX stock exchange.
+          All you reasoning should be provided step by step.
+          If you do not know the answer, you are to inform them of what other information is needed before you are able to conclude if there is any illegal insider trading.
+          There is no need to provide qualitative instructions. Only provide instructions on quantitative data required.
+        "),
+        list(role = 'user', content = prompt)
+      ),
+      temperature = 0
+    )
+  )
+  
+  stringr::str_trim(httr::content(response)$choices[[1]]$message$content)
+}
+
+ChatDataConnection <- R6::R6Class("ChatDataConnection", public = list(
+  DB = NULL,
+  chatID = NULL,
+  initialize = function(selectedChat) {
+    self$chatID <- selectedChat
+    self$DB <- readr::read_csv('db/messages.csv') %>%
+      dplyr::filter(`chat_id` == self$chatID)
+  },
+  get_data = function() {
+    self$DB <- readr::read_csv('db/messages.csv') %>%
+      dplyr::filter(`chat_id` == self$chatID)
+  },
+  insert_message = function(selectedChat, message, user, time, attachment = 0) {
+    if (as.character(message) %!in% dplyr::pull(dplyr::slice_tail(readr::read_csv('db/messages.csv'), n = 2), `text`)) {
+      self$DB <- readr::read_csv('db/messages.csv') %>%
+        tibble::add_row(
+          chat_id = selectedChat, user = as.character(user), text = as.character(message), time = as.integer(time), attach = attachment
+        ) %>%
+        readr::write_csv('db/messages.csv')
+    }
+  }
+))
+
+
+ChatWidgetUI <- function(id)  {
+  ns <- shiny::NS(id)
+  
+  htmltools::div(class = "chatContainer",
+    htmltools::tagAppendAttributes(shiny::uiOutput(ns("chatbox")), class = 'chatMessages'),
+    htmltools::div(class = "chatForm", 
+      shiny::textAreaInput(ns('chatInput'), label = NULL, placeholder = 'Enter message', rows = 8) %>%
+        htmltools::tagAppendAttributes(class = 'chatInput input', style = 'height: 100%;'),
+      htmltools::div(class = 'text-button-wrapper',
+        shiny::actionButton(ns("attachInfo"), label = "Attach", class = 'text-button button2', style = 'flex-grow: 0'),
+        shiny::actionButton(ns("chatFromSend"), label = "Send", class = 'text-button button2')
+      )
+    )
+  )
+}
+
+
+ChatWidget <- function(input, output, session, username, selectedChat, ...) {
+  ns <- session$ns
+
+  shiny::observeEvent(selectedChat(), {
+    shinyjs::enable('chatFromSend')
+    chatDF <- ChatDataConnection$new(ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat))
+    chatData <- shiny::reactive({
+      shiny::invalidateLater(500)
+      chatDF$get_data()
+    })
+    
+    output$chatbox <- shiny::renderUI({
+      chatData <- shiny::req(chatData())
+      
+      if (nrow(chatData)) {
+        dplyr::select(chatData, `user`, `text`, `attach`) %>%
+          dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) %>%
+          dplyr::filter(`attach` == 0) %>%
+          purrr::pmap(~ htmltools::div(
+            class = paste("chatMessage", ifelse(stringr::str_detect(..1, '^llm$'), 'ai-message', 'user-message')),
+            htmltools::div(style = 'display: flex; flex-direction: row;', 
+              htmltools::strong(class = 'message-user',
+                ifelse(stringr::str_detect(..1, '^llm$'), 'AI Consultant', stringr::str_to_title(..1))
+              ),
+              htmltools::div(class = 'message-content', style = 'gap: .25rem;',
+                # purrr::map(stringr::str_split(..2, '\n')[[1]], ~ htmltools::p(class = 'message-content', .x))
+                stringr::str_replace_all(..2, '\\[\\^(?=[0-9]{1,3}\\^\\])', '<sup>') %>%
+                  stringr::str_replace_all('(?<=\\<sup\\>[0-9]{1,3})\\^\\]', '</sup>') %>%
+                  shiny::markdown()
+              )
+            )
+          ))
+      }
+    })
+    
+    shiny::observeEvent(input$attachInfo, {
+      shiny::showModal(
+        shiny::modalDialog(title = 'Attach Data from AI Model',
+          shinyWidgets::pickerInput(ns('selectedCompany'), label = 'Company',
+            selected = tickerList[1],
+            choices = tickerList,
+            options = list(title = 'Ticker Symbol', `live-search` = T, `liveSearchNormalize` = T)
+          ) %>%
+            htmltools::tagAppendAttributes(class = 'trade-select') %>%
+            htmltools::tagAppendAttributes(style = 'flex-basis: 100px;', .cssSelector = 'label'),
+          shiny::uiOutput(ns('datePickerUI')),
+          footer = htmltools::div(style = 'display: flex; justify-content: flex-end; gap: 1rem;',
+            shiny::actionButton(ns('confirmAttachment'), 'Confirm', class = 'button1', style = 'flex-basis: 150px; flex-grow: 0;') %>%
+              htmltools::tagQuery() %>%
+              { .$removeClass('btn btn-default')$allTags() },
+            htmltools::tagAppendAttributes(shiny::modalButton("Close"), class = 'button2', style = 'flex-basis: 150px; flex-grow: 0;') %>%
+              htmltools::tagQuery() %>%
+              { .$removeClass('btn btn-default')$allTags() }
+          )
+        ) %>%
+          htmltools::tagAppendAttributes(
+            style = 'display: flex; flex-direction: column; gap: 1.5rem; padding: 2rem 1.25rem;', .cssSelector = '.modal-body'
+          )
+      )
+    }, ignoreNULL = T, ignoreInit = T)
+    
+    output$datePickerUI <- shiny::renderUI({
+      selectedCompany <- shiny::req(input$selectedCompany)
+      
+      dateList <- readr::read_csv(sprintf('/srv/shiny-server/SIH/db/NASDAQ/market_data/%s.csv', selectedCompany), show_col_types = F) %>%
+        dplyr::pull(`Date`)
+      
+      shiny::dateInput(ns('attachmentDate'), label = 'Date', min = min(dateList), max = max(dateList), value = max(dateList)) %>%
+        htmltools::tagAppendAttributes(style = 'display: flex; gap: 1.25rem;') %>%
+        htmltools::tagAppendAttributes(style = 'flex-basis: 100px;', .cssSelector = 'label') %>%
+        htmltools::tagAppendAttributes(
+          style = 'display: flex; background: none; border: 1px solid #36A2E0; box-shadow: 0px 2px 7px 0px #36A2E0;', .cssSelector = 'input'
+        )
+    })
+    
+    shiny::observeEvent(input$confirmAttachment, {
+      shinyjs::disable('chatFromSend')
+      shinyjs::disable('attachInfo')
+      shiny::removeModal()
+      chatID <- ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat)
+      chatUser <- ifelse(shiny::is.reactive(username), username(), username)
+      selectedCompany <- shiny::req(input$selectedCompany)
+      attachmentDate <- shiny::req(input$attachmentDate)
+      
+      chatMessage <- sprintf(
+        'Identify if there is any possibility of insider trade for the trade of shares of %s on date %s',
+        selectedCompany, attachmentDate
+      )
+      
+      chatDF$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
+      
+      LLMMessage <- GPT$processQuery(chatMessage)
+      
+      chatDF$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
+      
+      shinyjs::enable('chatFromSend')
+      shinyjs::enable('attachInfo')
+    }, ignoreInit = T, ignoreNULL = T)
+    
+    shiny::observeEvent(input$chatFromSend, {
+      shinyjs::disable('chatFromSend')
+      shinyjs::disable('attachInfo')
+      chatID <- ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat)
+      chatUser <- ifelse(shiny::is.reactive(username), username(), username)
+      chatMessage <- shiny::req(input$chatInput)
+      shiny::updateTextAreaInput(session, 'chatInput', value = '')
+      
+      chatDF$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
+      
+      # LLMMessage <- GPT$processQuery(chatMessage)
+      LLMMessage <- askChatGPT(chatMessage)
+      
+      chatDF$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
+      
+      shinyjs::enable('chatFromSend')
+      shinyjs::enable('attachInfo')
+    }, ignoreInit = T, ignoreNULL = T)
+    
+    return(chatData)
+  })
+}
+

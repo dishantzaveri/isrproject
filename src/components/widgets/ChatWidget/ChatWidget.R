@@ -2,7 +2,7 @@
 askChatGPT <- function(prompt) {
   response <- httr::POST(
     url = 'https://api.openai.com/v1/chat/completions', 
-    httr::add_headers(Authorization = paste("Bearer", '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')),
+    httr::add_headers(Authorization = paste("Bearer", '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')),
     httr::content_type_json(),
     encode = "json",
     body = list(
@@ -22,9 +22,18 @@ askChatGPT <- function(prompt) {
       temperature = 0
     )
   )
+  parsed <- httr::content(response, as = "parsed")
   
-  stringr::str_trim(httr::content(response)$choices[[1]]$message$content)
+  if (!is.null(parsed$error)) {
+    cat("GPT API Error:", parsed$error$message, "\n")
+    return(paste("Error:", parsed$error$message))
+  }
+  
+  return(stringr::str_trim(parsed$choices[[1]]$message$content))
 }
+  
+  #stringr::str_trim(httr::content(response)$choices[[1]]$message$content)
+
 
 ChatDataConnection <- R6::R6Class("ChatDataConnection", public = list(
   DB = NULL,
@@ -85,22 +94,24 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
         dplyr::select(chatData, `user`, `text`, `attach`) %>%
           dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) %>%
           dplyr::filter(`attach` == 0) %>%
-          purrr::pmap(~ htmltools::div(
+          purrr::pmap(~ htmltools::tags$div(
             class = paste("chatMessage", ifelse(stringr::str_detect(..1, '^llm$'), 'ai-message', 'user-message')),
-            htmltools::div(style = 'display: flex; flex-direction: row;', 
-              htmltools::strong(class = 'message-user',
-                ifelse(stringr::str_detect(..1, '^llm$'), 'AI Consultant', stringr::str_to_title(..1))
-              ),
-              htmltools::div(class = 'message-content', style = 'gap: .25rem;',
-                # purrr::map(stringr::str_split(..2, '\n')[[1]], ~ htmltools::p(class = 'message-content', .x))
-                stringr::str_replace_all(..2, '\\[\\^(?=[0-9]{1,3}\\^\\])', '<sup>') %>%
-                  stringr::str_replace_all('(?<=\\<sup\\>[0-9]{1,3})\\^\\]', '</sup>') %>%
-                  shiny::markdown()
-              )
+            htmltools::tags$div(style = 'display: flex; flex-direction: row;',
+                                htmltools::tags$strong(
+                                  class = 'message-user',
+                                  ifelse(stringr::str_detect(..1, '^llm$'), 'AI Consultant', stringr::str_to_title(..1))
+                                ),
+                                htmltools::tags$div(
+                                  class = 'message-content',
+                                  style = 'display: block; white-space: pre-wrap; word-break: break-word; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 6px;',
+                                  htmltools::HTML(htmltools::htmlEscape(..2))
+                                )
             )
           ))
       }
     })
+    
+    
     
     shiny::observeEvent(input$attachInfo, {
       shiny::showModal(
@@ -158,7 +169,9 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
       
       chatDF$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
       
+      cat("Calling GPT$processQuery with prompt:\n", prompt, "\n")
       LLMMessage <- GPT$processQuery(chatMessage)
+      cat("Received LLM Response:\n", llmAnalysis, "\n")
       
       chatDF$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
       

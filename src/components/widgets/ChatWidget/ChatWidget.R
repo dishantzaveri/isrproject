@@ -1,4 +1,5 @@
 
+locked <- FALSE
 askChatGPT <- function(prompt) {
   response <- httr::POST(
     url = 'https://api.openai.com/v1/chat/completions', 
@@ -12,7 +13,7 @@ askChatGPT <- function(prompt) {
           You are an experienced financial fraud investigator specializing in insider trading.
           You are leading a team of junior investigators in investigating insider trading.
           You are to answer queries of other investigators truthfully.
-          You are based in Monetary Authority of Singapore and your answers and reasonings should be based on Singapore's law and the SGX stock exchange.
+          You are based in Monetary Authority of Singapore and your answers and reasonings should be based on United State's law and the US stock exchange.
           All you reasoning should be provided step by step.
           If you do not know the answer, you are to inform them of what other information is needed before you are able to conclude if there is any illegal insider trading.
           There is no need to provide qualitative instructions. Only provide instructions on quantitative data required.
@@ -31,9 +32,6 @@ askChatGPT <- function(prompt) {
   
   return(stringr::str_trim(parsed$choices[[1]]$message$content))
 }
-  
-  #stringr::str_trim(httr::content(response)$choices[[1]]$message$content)
-
 
 ChatDataConnection <- R6::R6Class("ChatDataConnection", public = list(
   DB = NULL,
@@ -78,14 +76,22 @@ ChatWidgetUI <- function(id)  {
 
 ChatWidget <- function(input, output, session, username, selectedChat, ...) {
   ns <- session$ns
-
-  shiny::observeEvent(selectedChat(), {
+  print("ChatWidget initialized at")
+  print(Sys.time())
+  
+  chatDF <- reactiveVal(NULL)
+  
+  observeEvent(selectedChat(), {
+    chat_id <- ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat)
+    chatDF(ChatDataConnection$new(chat_id))
     shinyjs::enable('chatFromSend')
-    chatDF <- ChatDataConnection$new(ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat))
-    chatData <- shiny::reactive({
-      shiny::invalidateLater(500)
-      chatDF$get_data()
-    })
+  }) 
+  
+  chatData <- reactive({
+    req(chatDF())
+    shiny::invalidateLater(500)
+    chatDF()$get_data()
+  })
     
     output$chatbox <- shiny::renderUI({
       chatData <- shiny::req(chatData())
@@ -167,38 +173,51 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
         selectedCompany, attachmentDate
       )
       
-      chatDF$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
+      chatDF()$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
       
       cat("Calling GPT$processQuery with prompt:\n", prompt, "\n")
       LLMMessage <- GPT$processQuery(chatMessage)
       cat("Received LLM Response:\n", llmAnalysis, "\n")
       
-      chatDF$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
+      chatDF()$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
       
       shinyjs::enable('chatFromSend')
       shinyjs::enable('attachInfo')
     }, ignoreInit = T, ignoreNULL = T)
     
     shiny::observeEvent(input$chatFromSend, {
+      if (locked) return()
+      locked <<- TRUE
       shinyjs::disable('chatFromSend')
       shinyjs::disable('attachInfo')
+      
       chatID <- ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat)
       chatUser <- ifelse(shiny::is.reactive(username), username(), username)
-      chatMessage <- shiny::req(input$chatInput)
+      
+      chatMessage <- isolate(shiny::req(input$chatInput))
+
       shiny::updateTextAreaInput(session, 'chatInput', value = '')
+
+      last_messages <- tail(readr::read_csv('db/messages.csv'), 1)
+
+      if (nrow(last_messages) == 0 || last_messages$text != chatMessage || last_messages$user != chatUser) {
+        chatDF()$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
+        
+        LLMMessage <- askChatGPT(chatMessage)
+        
+        chatDF()$insert_message(selectedChat = chatID, message = LLMMessage, user = 'llm', time = as.integer(Sys.time()))
       
-      chatDF$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
-      
-      # LLMMessage <- GPT$processQuery(chatMessage)
-      LLMMessage <- askChatGPT(chatMessage)
-      
-      chatDF$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
+      } else {
+        cat("Duplicate message blocked\n")
+      }
+      locked <<- FALSE
       
       shinyjs::enable('chatFromSend')
       shinyjs::enable('attachInfo')
-    }, ignoreInit = T, ignoreNULL = T)
+    }, ignoreInit = TRUE, ignoreNULL = TRUE)
+    
     
     return(chatData)
-  })
+  
 }
 

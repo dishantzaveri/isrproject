@@ -1,87 +1,89 @@
 # ─────────────────────────────────────────────
-# InsiderRelations Page Module for Insider–Company Relationship Exploration
+# InsiderRelations Page Module with Network Graph
 # ─────────────────────────────────────────────
 
-# UI Function
 InsiderRelationsModuleUI <- function(id) {
   ns <- NS(id)
 
-  fluidRow(
-    column(
-      width = 3,
-      shinydashboard::box(
-        title = "Select Company Ticker", width = 12, status = "primary", solidHeader = TRUE,
-        selectInput(ns("ticker"), label = NULL, choices = NULL)
-      )
-    ),
-
-    column(
-      width = 9,
-      shinydashboard::box(
-        title = "Insider–Company Relationships", width = 12, status = "info", solidHeader = TRUE,
+  htmltools::div(
+    class = "p-4",
+    style = "background-color: #0a192f; color: white; min-height: 100vh;",
+    fluidRow(
+      column(
+        width = 3,
+        selectInput(ns("ticker"), "Select Company Ticker", choices = NULL)
+      ),
+      column(
+        width = 9,
         tabsetPanel(
           tabPanel("Insider Table", DT::dataTableOutput(ns("insiderTable"))),
-          tabPanel("Summary Plot", plotly::plotlyOutput(ns("insiderPlot")))
+          tabPanel("Network Graph", visNetwork::visNetworkOutput(ns("relationGraph"), height = "600px"))
         )
       )
     )
   )
 }
-# Server Function
-InsiderRelationsModule <- function(input, output, session, pageName, appData, ...) {
 
+InsiderRelationsModule <- function(input, output, session, pageName, appData, ...) {
   ns <- session$ns
 
-  # Reactive: load available CSVs from insider_data
+  # Load available insider CSVs
   insiderData <- reactive({
     files <- list.files("db/NASDAQ/insider_data", pattern = "\\.csv$", full.names = TRUE)
     names(files) <- stringr::str_remove(basename(files), "\\.csv$")
     files
   })
 
-  # Populate dropdown
+  # Populate the dropdown
   observe({
     updateSelectInput(session, "ticker", choices = names(insiderData()))
   })
 
-  # Load selected CSV
+  # Load the selected data
   selectedData <- reactive({
     req(input$ticker)
-    readr::read_csv(insiderData()[[input$ticker]], show_col_types = FALSE)
+    df <- readr::read_csv(insiderData()[[input$ticker]], show_col_types = FALSE)
+    df
   })
 
-  # Table output
+  # Table Output
   output$insiderTable <- DT::renderDataTable({
     DT::datatable(selectedData(), options = list(pageLength = 10))
   })
 
-  # Summary plot by "Relationship" (e.g., CEO, Director, etc.)
-  output$insiderPlot <- plotly::renderPlotly({
+  # Network Graph Output
+  output$relationGraph <- visNetwork::renderVisNetwork({
     df <- selectedData()
+    req(nrow(df) > 0)
 
-    if (!"Relationship" %in% names(df)) {
-      return(plotly::plot_ly() %>%
-               plotly::layout(title = "No 'Relationship' column found in data"))
-    }
+    # Nodes: Insider, Role, Transaction
+    insiders <- unique(df$`Insider Trading`)
+    roles <- unique(df$Relationship)
+    transactions <- unique(df$Transaction)
 
-    df_summary <- df %>%
-      dplyr::count(Relationship, name = "n") %>%
-      dplyr::arrange(desc(n)) %>%
-      dplyr::slice_head(n = 10)
-
-    plotly::plot_ly(
-      df_summary,
-      x = ~Relationship,
-      y = ~n,
-      type = 'bar'
+    node_df <- dplyr::bind_rows(
+      data.frame(id = insiders, label = insiders, group = "Insider"),
+      data.frame(id = roles, label = roles, group = "Role"),
+      data.frame(id = transactions, label = transactions, group = "Transaction")
     ) %>%
-    plotly::layout(
-      title = "Top Insider Roles (Relationship)",
-      xaxis = list(title = "Relationship"),
-      yaxis = list(title = "Number of Records")
+      dplyr::distinct(id, .keep_all = TRUE)
+
+    # Edges: Insider → Role, Insider → Transaction
+    edge_df <- dplyr::bind_rows(
+      df %>% dplyr::select(from = `Insider Trading`, to = Relationship),
+      df %>% dplyr::select(from = `Insider Trading`, to = Transaction)
     )
+
+    visNetwork::visNetwork(node_df, edge_df, height = "600px", width = "100%") %>%
+      visNetwork::visEdges(arrows = "to") %>%
+      visNetwork::visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+      visNetwork::visGroups(groupname = "Insider", color = "#1f77b4") %>%
+      visNetwork::visGroups(groupname = "Role", color = "#2ca02c") %>%
+      visNetwork::visGroups(groupname = "Transaction", color = "#ff7f0e") %>%
+      visNetwork::visLayout(randomSeed = 123)
   })
 }
+
 
 # Page Config
 InsiderRelationsPageConfig <- list(

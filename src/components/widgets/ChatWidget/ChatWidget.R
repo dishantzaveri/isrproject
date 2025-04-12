@@ -1,20 +1,35 @@
 
+<<<<<<< HEAD
 locked <- FALSE
 askChatGPT <- function(prompt) {
   response <- httr::POST(
     url = 'https://api.openai.com/v1/chat/completions', 
     httr::add_headers(Authorization = paste("Bearer", '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')),
+=======
+askChatGPT <- function(prompt) {
+  response <- httr::POST(
+    url = 'https://api.openai.com/v1/chat/completions', 
+    httr::add_headers(Authorization = paste("Bearer", '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')),
+>>>>>>> f863e61 (All files; cleaned db)
     httr::content_type_json(),
     encode = "json",
     body = list(
       model = "gpt-3.5-turbo",
       messages = list(
         list(role = 'system', content = "
+<<<<<<< HEAD
           You are an intelligent assistant designed to detect signs of potential insider trading. Your role is to analyze communications, trading patterns, financial reports, and timelines to flag any suspicious activity that may indicate the use of non-public material information.
           You are an experienced financial fraud investigator specializing in insider trading.
           You are to answer queries of other investigators truthfully.
           You are based in USA and your answers and reasonings should be based on United State's law and the US stock exchange.
           All you reasoning should be provided step by step.  Ask clarifying questions when the input is vague or missing context
+=======
+          You are an experienced financial fraud investigator specializing in insider trading.
+          You are leading a team of junior investigators in investigating insider trading.
+          You are to answer queries of other investigators truthfully.
+          You are based in Monetary Authority of Singapore and your answers and reasonings should be based on Singapore's law and the SGX stock exchange.
+          All you reasoning should be provided step by step.
+>>>>>>> f863e61 (All files; cleaned db)
           If you do not know the answer, you are to inform them of what other information is needed before you are able to conclude if there is any illegal insider trading.
           There is no need to provide qualitative instructions. Only provide instructions on quantitative data required.
         "),
@@ -23,6 +38,7 @@ askChatGPT <- function(prompt) {
       temperature = 0
     )
   )
+<<<<<<< HEAD
   parsed <- httr::content(response, as = "parsed")
   
   if (!is.null(parsed$error)) {
@@ -31,6 +47,10 @@ askChatGPT <- function(prompt) {
   }
   
   return(stringr::str_trim(parsed$choices[[1]]$message$content))
+=======
+  
+  stringr::str_trim(httr::content(response)$choices[[1]]$message$content)
+>>>>>>> f863e61 (All files; cleaned db)
 }
 
 ChatDataConnection <- R6::R6Class("ChatDataConnection", public = list(
@@ -76,6 +96,7 @@ ChatWidgetUI <- function(id)  {
 
 ChatWidget <- function(input, output, session, username, selectedChat, ...) {
   ns <- session$ns
+<<<<<<< HEAD
   print("ChatWidget initialized at")
   print(Sys.time())
   
@@ -126,6 +147,41 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
       )
     }
   })
+=======
+
+  shiny::observeEvent(selectedChat(), {
+    shinyjs::enable('chatFromSend')
+    chatDF <- ChatDataConnection$new(ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat))
+    chatData <- shiny::reactive({
+      shiny::invalidateLater(500)
+      chatDF$get_data()
+    })
+    
+    output$chatbox <- shiny::renderUI({
+      chatData <- shiny::req(chatData())
+      
+      if (nrow(chatData)) {
+        dplyr::select(chatData, `user`, `text`, `attach`) %>%
+          dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) %>%
+          dplyr::filter(`attach` == 0) %>%
+          purrr::pmap(~ htmltools::div(
+            class = paste("chatMessage", ifelse(stringr::str_detect(..1, '^llm$'), 'ai-message', 'user-message')),
+            htmltools::div(style = 'display: flex; flex-direction: row;', 
+              htmltools::strong(class = 'message-user',
+                ifelse(stringr::str_detect(..1, '^llm$'), 'AI Consultant', stringr::str_to_title(..1))
+              ),
+              htmltools::div(class = 'message-content', style = 'gap: .25rem;',
+                # purrr::map(stringr::str_split(..2, '\n')[[1]], ~ htmltools::p(class = 'message-content', .x))
+                stringr::str_replace_all(..2, '\\[\\^(?=[0-9]{1,3}\\^\\])', '<sup>') %>%
+                  stringr::str_replace_all('(?<=\\<sup\\>[0-9]{1,3})\\^\\]', '</sup>') %>%
+                  shiny::markdown()
+              )
+            )
+          ))
+      }
+    })
+    
+>>>>>>> f863e61 (All files; cleaned db)
     shiny::observeEvent(input$attachInfo, {
       shiny::showModal(
         shiny::modalDialog(title = 'Attach Data from AI Model',
@@ -180,6 +236,7 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
         selectedCompany, attachmentDate
       )
       
+<<<<<<< HEAD
       chatDF()$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
       
       cat("Calling GPT$processQuery with prompt:\n", prompt, "\n")
@@ -187,12 +244,20 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
       cat("Received LLM Response:\n", llmAnalysis, "\n")
       
       chatDF()$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
+=======
+      chatDF$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
+      
+      LLMMessage <- GPT$processQuery(chatMessage)
+      
+      chatDF$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
+>>>>>>> f863e61 (All files; cleaned db)
       
       shinyjs::enable('chatFromSend')
       shinyjs::enable('attachInfo')
     }, ignoreInit = T, ignoreNULL = T)
     
     shiny::observeEvent(input$chatFromSend, {
+<<<<<<< HEAD
       if (locked) return()
       locked <<- TRUE
       shinyjs::disable('chatFromSend')
@@ -226,5 +291,27 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
     
     return(chatData)
   
+=======
+      shinyjs::disable('chatFromSend')
+      shinyjs::disable('attachInfo')
+      chatID <- ifelse(shiny::is.reactive(selectedChat), selectedChat(), selectedChat)
+      chatUser <- ifelse(shiny::is.reactive(username), username(), username)
+      chatMessage <- shiny::req(input$chatInput)
+      shiny::updateTextAreaInput(session, 'chatInput', value = '')
+      
+      chatDF$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
+      
+      # LLMMessage <- GPT$processQuery(chatMessage)
+      LLMMessage <- askChatGPT(chatMessage)
+      
+      chatDF$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
+      
+      shinyjs::enable('chatFromSend')
+      shinyjs::enable('attachInfo')
+    }, ignoreInit = T, ignoreNULL = T)
+    
+    return(chatData)
+  })
+>>>>>>> f863e61 (All files; cleaned db)
 }
 

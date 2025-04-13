@@ -53,12 +53,12 @@ suppressWarnings(suppressMessages(invisible(
   lapply(c(base_dependencies$attached, module_dependencies, app_dependencies$attached), library, character.only = T, quietly = T)
 )))
 
-invisible(lapply(base_dependencies$hidden, function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    install.packages(pkg)
-  }
-  suppressWarnings(suppressMessages(library(pkg, character.only = TRUE)))
-}))
+#invisible(lapply(base_dependencies$hidden, function(pkg) {
+#  if (!requireNamespace(pkg, quietly = TRUE)) {
+#    install.packages(pkg)
+#  }
+#  suppressWarnings(suppressMessages(library(pkg, character.only = TRUE)))
+#}))
 
 
 # Python Modules

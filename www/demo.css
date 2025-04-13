@@ -945,6 +945,7 @@ svg.main-svg {
 
 .chatMessage {
   padding: .75rem 1rem;
+  width: 100%;
 }
 
 .chatMessage + .chatMessage {
@@ -952,14 +953,11 @@ svg.main-svg {
 }
 
 .chatMessages {
-  padding: 1rem 3rem;
   display: flex;
-  overflow-y: scroll;
   flex-direction: column;
-}
-
-.chatMessages > div {
-  max-height: calc(100vh - 300px);
+  gap: 1rem;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
 .message-user {
@@ -970,11 +968,10 @@ svg.main-svg {
 }
 
 .message-content {
-  font-weight: 400;
+  display: block;
+  white-space: pre-wrap;
   word-break: break-word;
-  flex-direction: column;
-  display: inline-flex;
-  margin-bottom: 0;
+  line-height: 1.5;
 }
 
 .message-content a {

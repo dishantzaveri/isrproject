@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from yahoo_fin import news
 
 CHATGPT_MODEL = 'gpt-3.5-turbo'
-CHATGPT_API_KEY = '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'
+CHATGPT_API_KEY = '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'
 NEWS_API_KEY = [
   'EyPg9DD2IXsEh4D6tZBEGXeJ1j1EgY6L'
 ][0]
@@ -41,17 +41,20 @@ CHATGPT_CONTEXT = {
 
 def json_gpt(input: str):
   openai.api_key = CHATGPT_API_KEY
-  completion = openai.ChatCompletion.create(
-    model = CHATGPT_MODEL,
-    messages = [
-      {"role": "system", "content": "Output only valid JSON"},
-      {"role": "user", "content": input}
-    ],
-    temperature = 0,
-  )
+  try:
+    completion = openai.ChatCompletion.create(
+      model = CHATGPT_MODEL,
+      messages = [
+        {"role": "system", "content": "Output only valid JSON"},
+        {"role": "user", "content": input}
+      ],
+      temperature = 0,
+    )
   
-  text = completion.choices[0].message.content
-  parsed = json.loads(text)
+    text = completion.choices[0].message.content
+    parsed = json.loads(text)
+  except Exception as e:
+    parsed = f"Error from GPT: {e}"
   
   return parsed
 
@@ -171,6 +174,7 @@ def generateResponse(companyName, date):
 
 # This function will take the query of the user as the input and will return the query response to the user.
 def processQuery(query):
+  print("Received query:", query, flush=True)
   answer = ''
   tokens = query.split(" ")
   
@@ -212,16 +216,21 @@ def processQuery(query):
       answer = 'As per our investigations and calculations, the provided trade does not indicate any drastic price fluctuations in the stock prices of ' + companyName + '. Hence, we conclude that there is not a possibility of an insider trade in this case.'
     
   else:
+    print("Generic question sent to GPT", flush=True)
     openai.api_key = CHATGPT_API_KEY
     messages = [
       CHATGPT_CONTEXT_NEWS,
       {"role": "user", "content": query}
     ]
-    response = openai.ChatCompletion.create(
-    model = CHATGPT_MODEL,
-    messages = messages,
-    temperature = 0)
-    answer = response.choices[0].message["content"]
+    try:
+      response = openai.ChatCompletion.create(
+        model = CHATGPT_MODEL,
+        messages = messages,
+        temperature = 0)
+      answer = response.choices[0].message["content"]
+    except Exception as e:
+      print("GPT call failed:", e, flush=True)
+      answer = f"Error from GPT: {e}"
   
   return answer
 

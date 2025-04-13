@@ -93,32 +93,39 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
     chatDF()$get_data()
   })
     
-    output$chatbox <- shiny::renderUI({
-      chatData <- shiny::req(chatData())
+  output$chatbox <- renderUI({
+    chatData <- req(chatData())
+    
+    if (nrow(chatData)) {
+      msgs <- chatData %>%
+        dplyr::filter(attach == 0) %>%
+        dplyr::mutate(user = as.character(user), text = as.character(text))
       
-      if (nrow(chatData)) {
-        dplyr::select(chatData, `user`, `text`, `attach`) %>%
-          dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) %>%
-          dplyr::filter(`attach` == 0) %>%
-          purrr::pmap(~ htmltools::tags$div(
-            class = paste("chatMessage", ifelse(stringr::str_detect(..1, '^llm$'), 'ai-message', 'user-message')),
-            htmltools::tags$div(style = 'display: flex; flex-direction: row;',
-                                htmltools::tags$strong(
-                                  class = 'message-user',
-                                  ifelse(stringr::str_detect(..1, '^llm$'), 'AI Consultant', stringr::str_to_title(..1))
-                                ),
-                                htmltools::tags$div(
-                                  class = 'message-content',
-                                  style = 'display: block; white-space: pre-wrap; word-break: break-word; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 6px;',
-                                  htmltools::HTML(htmltools::htmlEscape(..2))
-                                )
+      tagList(
+        lapply(seq_len(nrow(msgs)), function(i) {
+          user <- msgs$user[i]
+          text <- msgs$text[i]
+          
+          div(
+            class = paste("chatMessage", if (user == "llm") "ai-message" else "user-message"),
+            style = "margin-bottom: 1rem;",
+            div(
+              style = "display: flex; flex-direction: row; gap: 0.5rem;",
+              strong(
+                class = "message-user",
+                if (user == "llm") "AI Consultant" else stringr::str_to_title(user)
+              ),
+              div(
+                class = "message-content",
+                style = "white-space: pre-wrap; word-break: break-word; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 6px; flex: 1;",
+                HTML(htmltools::htmlEscape(text))
+              )
             )
-          ))
-      }
-    })
-    
-    
-    
+          )
+        })
+      )
+    }
+  })
     shiny::observeEvent(input$attachInfo, {
       shiny::showModal(
         shiny::modalDialog(title = 'Attach Data from AI Model',

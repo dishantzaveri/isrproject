@@ -120,3 +120,18 @@ These fluctuations in the stock prices of D C C P L C can be influenced by vario
 0000001,admin,"hi
 ",1743654751,0
 0000001,admin,hi,1743728357,0
+0000001,admin,"hey
+",1744700784,0
+0000001,llm,Hello! How can I assist you today regarding insider trading?,1744700815,0
+0000001,admin,"hello, were there any insider trades yesterday?
+",1744701025,0
+0000001,llm,I would need more specific information to answer your question. Please provide the name of the company or companies you are inquiring about so I can check for any insider trades that occurred yesterday.,1744701026,0
+0000001,admin,AAPL,1744701041,0
+0000001,llm,Please provide more context or a specific question related to AAPL so that I can assist you effectively.,1744701042,0
+0000001,admin,"Any insider trades ysterday at APPL?
+",1744701070,0
+0000001,llm,"To determine if there were any insider trades at Apple Inc. (AAPL) yesterday, I would need access to real-time insider trading data or a reliable source that provides this information. Insider trading data is typically reported to the Securities and Exchange Commission (SEC) within two business days of the trade, so the most up-to-date information may not be immediately available. 
+
+If you have access to a real-time insider trading database or a reliable news source that reports insider trades as they occur, you can search for any insider trades at AAPL that occurred yesterday. Look for any transactions made by directors, officers, or significant shareholders of the company. 
+
+If you do not have access to real-time data, you may need to wait for the official reports to be filed with the SEC before confirming if there were any insider trades at AAPL yesterday.",1744701073,0

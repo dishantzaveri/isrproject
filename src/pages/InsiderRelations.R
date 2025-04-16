@@ -25,8 +25,30 @@ InsiderRelationsModuleUI <- function(id) {
           border-radius: 8px;
           color: white;
         }
+        .bootstrap-select .bs-searchbox input {
+          background-color: #174d89 !important;
+          color: white !important;
+          border: 1px solid #ffffff;
+        }
+        .dataTables_wrapper .dataTables_filter input {
+          background-color: #174d89 !important;
+          color: white !important;
+          border: 1px solid white !important;
+        }
+        .dropdown-menu.inner li a:hover {
+          background-color: #1d5ea8 !important;
+          color: white !important;
+        }
+        .dataTables_wrapper {
+          color: white !important;
+        }
+        table.dataTable tbody td {
+          color: white !important;
+        }
+        table.dataTable thead th {
+          color: white !important;
+        }
       ")),
-
 
     htmltools::tags$div(
       style = "background-color: #0a1f44; padding: 20px; min-height: 100vh; color: white;",

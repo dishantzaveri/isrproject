@@ -28,7 +28,25 @@ InsiderRelationsModuleUI <- function(id) {
         .bootstrap-select .bs-searchbox input {
           background-color: #174d89 !important;
           color: white !important;
-          border: 1px solid #ffffff;
+          # border: 1px solid #ffffff;
+          border: 1px solid #174d89;
+        }
+              select.vis-network-select {
+        background-color: #174d89 !important;
+        color: white !important;
+        border: 1px solid #0a1f44;
+        border-radius: 4px;
+        padding: 5px;
+      }
+        .vis-network-tooltip {
+          background-color: #0a1f44 !important;
+          color: white !important;
+          border: 1px solid #174d89 !important;
+          padding: 10px;
+          border-radius: 4px;
+        }
+        .vis-network-tooltip h4 {
+          color: white !important;
         }
         .dataTables_wrapper .dataTables_filter input {
           background-color: #174d89 !important;
@@ -134,7 +152,7 @@ InsiderRelationsModule <- function(input, output, session, pageName, appData, ..
     edges <- data.frame(
       from = filtered$`Insider Trading`,
       to = filtered$Relationship,
-      label = paste("Date:", filtered$Date),
+      # label = paste("Date:", filtered$Date),
       arrows = "to",
       color = list(color = "#ffffff", highlight = "#ff6666", hover = "#66ffcc"),
       font = list(color = "#ffffff", size = 12)
@@ -142,7 +160,7 @@ InsiderRelationsModule <- function(input, output, session, pageName, appData, ..
 
     visNetwork(nodes, edges, height = "600px", width = "100%") %>%
       visEdges(smooth = list(enabled = TRUE, type = "dynamic")) %>%
-      visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+      visOptions(highlightNearest = TRUE, nodesIdSelection = FALSE) %>%
       visInteraction(navigationButtons = TRUE) %>%
       visLayout(improvedLayout = TRUE, randomSeed = 42)
   })

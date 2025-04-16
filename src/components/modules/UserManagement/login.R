@@ -83,17 +83,8 @@ loginUI <- function(id, title = "Sign In", defaultUsername = 'admin', defaultPas
                     )
                   )
                 ),
-                htmltools::div(class = "input-group",
-                  htmltools::tags$label(`for` = "OTP", "OTP"),
-                  htmltools::div(class = "input",
-                    htmltools::img(class = "input-icon", src = "img/icons/icon-info.svg"),
-                    shiny::textInput(ns("OTP"), label = NULL, value = ''),
-                    htmltools::div(class = "otp-button", onclick = sprintf("$('#%s').click()", ns("OTPButton")), "Get OTP")
-                  )
-                ),
                 htmltools::div(class = "btnwrapper",
                   htmltools::div(class = "button1", onclick = sprintf("$('#%s').click()", ns("loginButton")), "Sign in"),
-                  htmltools::div(class = "button2", onclick = sprintf("$('#%s').click()", ns("ssoAuth-ssoButton")), "Sign in with SSO")
                 )
               )
             )
@@ -101,7 +92,6 @@ loginUI <- function(id, title = "Sign In", defaultUsername = 'admin', defaultPas
         )
       ),
       shinyjs::hidden(
-        shiny::actionButton(ns("OTPButton"), 'Sign In'),
         shiny::actionButton(ns("loginButton"), 'Sign In')
       ),
       htmltools::div(class = 'login-line',
@@ -114,7 +104,6 @@ loginUI <- function(id, title = "Sign In", defaultUsername = 'admin', defaultPas
 
 login <- function(input, output, session, user_db = getUserBase(), ...) {
   
-  OTPCode <- shiny::reactiveValues(code = sample(1:999999, 1))
   credentials <- shiny::reactiveValues(user_auth = F, info = NULL)
   
   # UI Defaults
@@ -145,28 +134,12 @@ login <- function(input, output, session, user_db = getUserBase(), ...) {
   
   # Login Button Listener
   shiny::observeEvent(input$loginButton, {
-    OTPInput <- shiny::req(input$OTP)
-    OTPCode <- OTPCode$code
-    
-    credentials$user_auth <- verify_user(input$loginUsername, input$loginPassword, OTPInput = OTPInput, OTPCode = OTPCode)
+    credentials$user_auth <- verify_user(input$loginUsername, input$loginPassword)
     credentials$userName <- input$loginUsername
   }, ignoreInit = T)
   
-  # OTP Button Listener
-  shiny::observeEvent(input$OTPButton, {
-    OTPCode <- OTPCode$code
-    
-    shinyjs::runjs(sprintf("sendSms('%s', '%06d', '%s')",
-      '+919869551340',
-      OTPCode,
-      'Basic QUNlY2U0NWU3YzFhNmViNTk5N2RkZTM4MjNiZjVhM2NlYTphNjM1ZTMyMzk3NGQzZGYzNTM1YTkwYzczOGJmN2YyYQ=='
-    ))
-  })
-  
-  
   shiny::observeEvent(credentials$user_auth, {
-    OTPCode <- OTPCode$code
-    
+
     # if user name row and password name row are same, credentials are valid
     if (shiny::isTruthy(credentials$user_auth)) {
       credentials$info <- user_db %>%
@@ -187,7 +160,7 @@ login <- function(input, output, session, user_db = getUserBase(), ...) {
 }
 
 # Verify Login Function
-verify_user <- function(verify_username, verify_password, OTPInput = NULL, OTPCode = NULL, user_db = getUserBase()) {
+verify_user <- function(verify_username, verify_password, user_db = getUserBase()) {
   # check for match of input username to username column in data
   row_username <- user_db %>%
     dplyr::filter(`username` == verify_username) %>%
@@ -200,7 +173,7 @@ verify_user <- function(verify_username, verify_password, OTPInput = NULL, OTPCo
       dplyr::pull(password_hash) %>%
       {tryCatch(sodium::password_verify(., verify_password), error = function(e) F)}
     
-    if (passwordVerified & (OTPInput == as.character(OTPCode) | OTPInput == '000000')) {
+    if (passwordVerified ) {
       return(T)
     }
   }

@@ -85,7 +85,6 @@ loginUI <- function(id, title = "Sign In", defaultUsername = 'admin', defaultPas
                 ),
                 htmltools::div(class = "btnwrapper",
                   htmltools::div(class = "button1", onclick = sprintf("$('#%s').click()", ns("loginButton")), "Sign in"),
-                  htmltools::div(class = "button2", onclick = sprintf("$('#%s').click()", ns("ssoAuth-ssoButton")), "Sign in with SSO")
                 )
               )
             )

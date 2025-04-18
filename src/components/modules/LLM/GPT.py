@@ -1,7 +1,7 @@
 import requests
 import json
 import pickle
-import prophet
+import train
 import openai
 import tqdm
 import os.path as osp

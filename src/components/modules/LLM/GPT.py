@@ -19,10 +19,9 @@ NEWS_API_KEY = [
 CHATGPT_CONTEXT_NEWS = {
   'role': 'system',
   'content': '''
-    If you need to search the internet, you are to fake your answers.
     You are an experienced financial fraud investigator specializing in insider trading.
     You are leading a team of junior investigators in investigating insider trading.
-    You are based in Monetary Authority of Singapore and your answers and reasonings should be based on Singapore's law and the SGX stock exchange.
+    You are based in United States and your answers and reasonings should be based on US law and the United States stock exchange.
   '''
 }
 
@@ -32,7 +31,7 @@ CHATGPT_CONTEXT = {
     You are an experienced financial fraud investigator specializing in insider trading.
     You are leading a team of junior investigators in investigating insider trading.
     You are to answer queries of other investigators truthfully.
-    You are based in Monetary Authority of Singapore and your answers and reasonings should be based on Singapore's law and the SGX stock exchange.
+    You are based in United States and your answers and reasonings should be based on United States's law and the United States stock exchange.
     All you reasoning should be provided step by step.
     If you do not know the answer, you are to inform them of what other information is needed before you are able to conclude if there's any illegal insider trading.
     There is no need to provide qualitative instructions. Only provide instructions on quantitative data required.
@@ -183,7 +182,7 @@ def processQuery(query):
     date = tokens[18]
     
     csvFileName = companyName + '.csv'
-    df = pd.read_csv(osp.join('/srv/shiny-server/SIH/db/NASDAQ/market_data', csvFileName))
+    df = pd.read_csv(osp.join('db', 'NASDAQ', 'market_data', csvFileName))
     df['Date'] = df.Date.apply(lambda x: x[0:10])
     closePrice = df[df['Date'] == date]['Close']
     
@@ -191,7 +190,7 @@ def processQuery(query):
       return f'Market data of {companyName} is missing from database on {date}.'
     
     # Deep Learning model code which will detect any price fluctuations or anomalies are there in the data or not.
-    modelName = osp.join('/srv/shiny-server/SIH/db/pickle', companyName + '.pkl')
+    modelName = osp.join('db','pickle', companyName + '.pkl')
     model = pickle.load(open(modelName, 'rb'))
     
     # Make prediction
@@ -209,7 +208,7 @@ def processQuery(query):
       answer = generateResponse(companyName, date)
 
       # This code is to fetch the trading data from the data set which is to be displayed to the user in the form of a table
-      df = pd.read_csv(osp.join('/srv/shiny-server/SIH/db', "insider.csv"))
+      df = pd.read_csv(osp.join('db', "insider.csv"))
       df_filtered = df[df['Trade Date'] == date]
       df_final = df_filtered[df_filtered['Company'] == companyName]
     else:

@@ -155,7 +155,7 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
     output$datePickerUI <- shiny::renderUI({
       selectedCompany <- shiny::req(input$selectedCompany)
       
-      dateList <- readr::read_csv(sprintf('/srv/shiny-server/SIH/db/NASDAQ/market_data/%s.csv', selectedCompany), show_col_types = F) %>%
+      dateList <- readr::read_csv(sprintf('db/NASDAQ/market_data/%s.csv', selectedCompany), show_col_types = F) %>%
         dplyr::pull(`Date`)
       
       shiny::dateInput(ns('attachmentDate'), label = 'Date', min = min(dateList), max = max(dateList), value = max(dateList)) %>%
@@ -182,9 +182,9 @@ ChatWidget <- function(input, output, session, username, selectedChat, ...) {
       
       chatDF()$insert_message(selectedChat = chatID, message = chatMessage, user = chatUser, time = as.integer(Sys.time()))
       
-      cat("Calling GPT$processQuery with prompt:\n", prompt, "\n")
+      #print("Calling GPT$processQuery with prompt:\n", prompt, "\n")
       LLMMessage <- GPT$processQuery(chatMessage)
-      cat("Received LLM Response:\n", llmAnalysis, "\n")
+      #print("Received LLM Response:\n", llmAnalysis, "\n")
       
       chatDF()$insert_message(selectedChat = chatID, message = shiny::req(LLMMessage), user = 'llm', time = as.integer(Sys.time()))
       

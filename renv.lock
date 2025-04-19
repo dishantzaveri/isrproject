@@ -5633,7 +5633,6 @@
       "Author": "Simon Garnier [aut, cre], Noam Ross [ctb, cph], Bob Rudis [ctb, cph], Marco Sciaini [ctb, cph], Antônio Pedro Camargo [ctb, cph], Cédric Scherer [ctb, cph]",
       "Repository": "CRAN"
     },
-<<<<<<< HEAD
     "visNetwork": {
       "Package": "visNetwork",
       "Version": "2.1.2",
@@ -5679,8 +5678,6 @@
       "Repository": "CRAN",
       "Encoding": "UTF-8"
     },
-=======
->>>>>>> f863e61 (All files; cleaned db)
     "vroom": {
       "Package": "vroom",
       "Version": "1.6.5",

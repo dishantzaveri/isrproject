@@ -83,22 +83,8 @@ loginUI <- function(id, title = "Sign In", defaultUsername = 'admin', defaultPas
                     )
                   )
                 ),
-<<<<<<< HEAD
                 htmltools::div(class = "btnwrapper",
                   htmltools::div(class = "button1", onclick = sprintf("$('#%s').click()", ns("loginButton")), "Sign in"),
-=======
-                htmltools::div(class = "input-group",
-                  htmltools::tags$label(`for` = "OTP", "OTP"),
-                  htmltools::div(class = "input",
-                    htmltools::img(class = "input-icon", src = "img/icons/icon-info.svg"),
-                    shiny::textInput(ns("OTP"), label = NULL, value = ''),
-                    htmltools::div(class = "otp-button", onclick = sprintf("$('#%s').click()", ns("OTPButton")), "Get OTP")
-                  )
-                ),
-                htmltools::div(class = "btnwrapper",
-                  htmltools::div(class = "button1", onclick = sprintf("$('#%s').click()", ns("loginButton")), "Sign in"),
-                  htmltools::div(class = "button2", onclick = sprintf("$('#%s').click()", ns("ssoAuth-ssoButton")), "Sign in with SSO")
->>>>>>> f863e61 (All files; cleaned db)
                 )
               )
             )
@@ -106,10 +92,6 @@ loginUI <- function(id, title = "Sign In", defaultUsername = 'admin', defaultPas
         )
       ),
       shinyjs::hidden(
-<<<<<<< HEAD
-=======
-        shiny::actionButton(ns("OTPButton"), 'Sign In'),
->>>>>>> f863e61 (All files; cleaned db)
         shiny::actionButton(ns("loginButton"), 'Sign In')
       ),
       htmltools::div(class = 'login-line',
@@ -122,10 +104,6 @@ loginUI <- function(id, title = "Sign In", defaultUsername = 'admin', defaultPas
 
 login <- function(input, output, session, user_db = getUserBase(), ...) {
   
-<<<<<<< HEAD
-=======
-  OTPCode <- shiny::reactiveValues(code = sample(1:999999, 1))
->>>>>>> f863e61 (All files; cleaned db)
   credentials <- shiny::reactiveValues(user_auth = F, info = NULL)
   
   # UI Defaults
@@ -156,37 +134,12 @@ login <- function(input, output, session, user_db = getUserBase(), ...) {
   
   # Login Button Listener
   shiny::observeEvent(input$loginButton, {
-<<<<<<< HEAD
     credentials$user_auth <- verify_user(input$loginUsername, input$loginPassword)
     credentials$userName <- input$loginUsername
   }, ignoreInit = T)
   
   shiny::observeEvent(credentials$user_auth, {
 
-=======
-    OTPInput <- shiny::req(input$OTP)
-    OTPCode <- OTPCode$code
-    
-    credentials$user_auth <- verify_user(input$loginUsername, input$loginPassword, OTPInput = OTPInput, OTPCode = OTPCode)
-    credentials$userName <- input$loginUsername
-  }, ignoreInit = T)
-  
-  # OTP Button Listener
-  shiny::observeEvent(input$OTPButton, {
-    OTPCode <- OTPCode$code
-    
-    shinyjs::runjs(sprintf("sendSms('%s', '%06d', '%s')",
-      '+919869551340',
-      OTPCode,
-      'Basic QUNlY2U0NWU3YzFhNmViNTk5N2RkZTM4MjNiZjVhM2NlYTphNjM1ZTMyMzk3NGQzZGYzNTM1YTkwYzczOGJmN2YyYQ=='
-    ))
-  })
-  
-  
-  shiny::observeEvent(credentials$user_auth, {
-    OTPCode <- OTPCode$code
-    
->>>>>>> f863e61 (All files; cleaned db)
     # if user name row and password name row are same, credentials are valid
     if (shiny::isTruthy(credentials$user_auth)) {
       credentials$info <- user_db %>%
@@ -207,11 +160,7 @@ login <- function(input, output, session, user_db = getUserBase(), ...) {
 }
 
 # Verify Login Function
-<<<<<<< HEAD
 verify_user <- function(verify_username, verify_password, user_db = getUserBase()) {
-=======
-verify_user <- function(verify_username, verify_password, OTPInput = NULL, OTPCode = NULL, user_db = getUserBase()) {
->>>>>>> f863e61 (All files; cleaned db)
   # check for match of input username to username column in data
   row_username <- user_db %>%
     dplyr::filter(`username` == verify_username) %>%
@@ -224,11 +173,7 @@ verify_user <- function(verify_username, verify_password, OTPInput = NULL, OTPCo
       dplyr::pull(password_hash) %>%
       {tryCatch(sodium::password_verify(., verify_password), error = function(e) F)}
     
-<<<<<<< HEAD
     if (passwordVerified ) {
-=======
-    if (passwordVerified & (OTPInput == as.character(OTPCode) | OTPInput == '000000')) {
->>>>>>> f863e61 (All files; cleaned db)
       return(T)
     }
   }

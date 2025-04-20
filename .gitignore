@@ -209,4 +209,4 @@ docs/
 po/*~
 
 # RStudio Connect folder
-rsconnect/
+rsconnect/db/

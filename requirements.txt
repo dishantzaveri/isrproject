@@ -6,3 +6,5 @@ google-genai
 httpx
 openai
 streamlit
+pycountry
+fastapi

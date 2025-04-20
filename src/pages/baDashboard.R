@@ -156,9 +156,9 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   insiderTradesDF <- shiny::reactive({
     insiderTradesDF <- readr::read_csv('db/insider.csv', show_col_types = F) %>%
       dplyr::mutate('Transaction Type' = stringr::str_extract(`Transaction Type`, '(?<=[A-Z]\\s-\\s).*')) %>%
-      dplyr::mutate(dplyr::across(dplyr::ends_with('Date'), ~ as.Date(.x, format = '%d/%m/%Y')))
+      dplyr::mutate(dplyr::across(dplyr::ends_with('Date'), ~ as.Date(.x, format = '%d/%m/%y')))
   })
-  
+
   clusterDF <- shiny::reactive({
     selectedDate <- shiny::req(selectedDate())
     
@@ -170,9 +170,18 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   clusterData <- shiny::reactive({
     clusterDF <- shiny::req(clusterDF())
     
-    marketDFN <- dplyr::select(clusterDF, -`Ticker`, -`Date`, -`Year`) %>%
-      as.matrix() %>%
-      clusterSim::data.Normalization(type = 'n1', normalization = 'column')
+    marketDFN <- dplyr::select(clusterDF, -Ticker, -Date, -Year)
+    
+    # Drop rows or columns with NA/Inf — choose based on what makes sense
+    marketDFN <- marketDFN[complete.cases(marketDFN), ]
+    marketDFN <- as.matrix(marketDFN)
+    marketDFN[!is.finite(marketDFN)] <- 0  # Replace Inf/-Inf with 0 to avoid crash
+    
+    marketDFN <- clusterSim::data.Normalization(marketDFN, type = 'n1', normalization = 'column')
+    
+   # marketDFN <- dplyr::select(clusterDF, -`Ticker`, -`Date`, -`Year`) %>%
+  #    as.matrix() %>%
+  #    clusterSim::data.Normalization(type = 'n1', normalization = 'column')
     
     PCA1 <- prcomp(marketDFN, center = F, scale. = F)
     PCA2 <- prcomp(marketDFN, center = F, scale. = F, rank. = nrow(dplyr::filter(factoextra::get_eigenvalue(PCA1), `eigenvalue` > 1)))
@@ -284,19 +293,53 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   #   shiny::markdown(llmAnalysis)
   # })
   
+  # output$accountDT <- DT::renderDT({
+  #   insiderTradesDF <- shiny::req(insiderTradesDF())
+  #   companyID <- shiny::req(companyID())
+  #   accountFilter <- shiny::req(input$accountFilter)
+  #   
+  #   dplyr::filter(insiderTradesDF, `Ticker` == companyID) %>%
+  #     dplyr::filter(accountFilter[1] < `Trade Date` & `Trade Date` < accountFilter[2]) %>%
+  #     dplyr::select(
+  #       `Ticker`, `Company`, `Trade Date`, `Insider Name`, `Title`, `Transaction Type`, `Price`, `Quantity`, `Owned`,
+  #       '% Change (Owned)' = `Change of Amount Owned`, `Value`, 'Open Price' = `Date Traded Open`, 'Close Price' = `Date Traded Close`
+  #     ) %>%
+  #     dplyr::mutate(dplyr::across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .x))))
+  # }, selection = 'single', escape = F, rownames = F, editable = F, options = list(pageLength = 100, processing = F, scrollX = T, scrollY = T, dom = 't'))
+
   output$accountDT <- DT::renderDT({
     insiderTradesDF <- shiny::req(insiderTradesDF())
     companyID <- shiny::req(companyID())
     accountFilter <- shiny::req(input$accountFilter)
     
-    dplyr::filter(insiderTradesDF, `Ticker` == companyID) %>%
+    df <- dplyr::filter(insiderTradesDF, `Ticker` == companyID) %>%
       dplyr::filter(accountFilter[1] < `Trade Date` & `Trade Date` < accountFilter[2]) %>%
       dplyr::select(
         `Ticker`, `Company`, `Trade Date`, `Insider Name`, `Title`, `Transaction Type`, `Price`, `Quantity`, `Owned`,
-        '% Change (Owned)' = `Change of Amount Owned`, `Value`, 'Open Price' = `Date Traded Open`, 'Close Price' = `Date Traded Close`
+        `% Change (Owned)` = `Change of Amount Owned`, `Value`,
+        `Open Price` = `Date Traded Open`, `Close Price` = `Date Traded Close`, `Suspicious`
       ) %>%
       dplyr::mutate(dplyr::across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .x))))
-  }, selection = 'single', escape = F, rownames = F, editable = F, options = list(pageLength = 100, processing = F, scrollX = T, scrollY = T, dom = 't'))
+    
+    DT::datatable(
+      df,
+      selection = 'single', escape = FALSE, rownames = FALSE, editable = FALSE,
+      options = list(
+        pageLength = 100,
+        processing = FALSE,
+        scrollX = TRUE,
+        scrollY = TRUE,
+        dom = 't',
+        columnDefs = list(list(visible = FALSE, targets = which(names(df) == "Suspicious") - 1))  # hide "Suspicious"
+      )
+    ) %>%
+      DT::formatStyle(
+        columns = 1:ncol(df),
+        target = 'row',
+        valueColumns = "Suspicious",
+        backgroundColor = DT::styleEqual("Yes", "#ffcccc")  # highlight in red if Suspicious == "Yes"
+      )
+  })
   
   output$marketMovementPlot <- plotly::renderPlotly({
     marketDF <- shiny::req(marketDF())

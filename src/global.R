@@ -278,23 +278,56 @@ tickerList <- intersect(
   stringr::str_extract(list.files('db/NASDAQ/insider_data'), '^[A-Z]*(?=\\.)')
 )
 
-metaDF <- readr::read_csv('db/NASDAQ/meta.csv', show_col_types = F) %>%
-  dplyr::filter(`Symbol` %in% tickerList) %>%
+# metaDF <- readr::read_csv('db/NASDAQ/meta.csv', show_col_types = F) %>%
+#   dplyr::filter(`Symbol` %in% tickerList) %>%
+#   dplyr::mutate(
+#     'Company Name' = stringr::str_replace_all(`Security Name`, '-|\\([A-z\\s]*\\)', '') %>%
+#       { ifelse(stringr::str_detect(., 'Common|Index|Ordinary'), stringr::str_extract(., '.*(?=(\\s)(Common|Index|Ordinary))'), .) } %>%
+#       { ifelse(stringr::str_detect(., 'Class'), stringr::str_extract(., '.*(?=(\\s)(Class [A-Z]))'), .) } %>%
+#       stringr::str_trim()
+#   ) %>%
+#   dplyr::mutate(
+#     'Stock Type' = stringr::str_replace_all(`Security Name`, ' - |\\([A-z\\s]*\\)', '') %>%
+#       stringr::str_replace(`Company Name`, '') %>%
+#       stringr::str_trim() %>%
+#       { ifelse(is.na(.) | . == '', 'Common Stock', .) }
+#   )
+# 
+# tickerList <- intersect(tickerList, dplyr::pull(metaDF, `Symbol`)) %>%
+#   rlang::set_names(dplyr::pull(metaDF, `Company Name`))
+
+# Read and clean nasdaqlisted.txt
+metaDF <- readr::read_delim(
+  file = 'db/NASDAQ/nasdaqlisted.txt',
+  delim = "|",
+  show_col_types = FALSE
+) %>%
+  # Drop the last row if it's the file creation note
+  dplyr::filter(!stringr::str_detect(Symbol, "File Creation Time")) %>%
+  
+  # Filter to your tickers of interest
+  dplyr::filter(Symbol %in% tickerList) %>%
+  
+  # Clean company names
   dplyr::mutate(
-    'Company Name' = stringr::str_replace_all(`Security Name`, '-|\\([A-z\\s]*\\)', '') %>%
+    `Company Name` = stringr::str_replace_all(`Security Name`, '-|\\([A-z\\s]*\\)', '') %>%
       { ifelse(stringr::str_detect(., 'Common|Index|Ordinary'), stringr::str_extract(., '.*(?=(\\s)(Common|Index|Ordinary))'), .) } %>%
       { ifelse(stringr::str_detect(., 'Class'), stringr::str_extract(., '.*(?=(\\s)(Class [A-Z]))'), .) } %>%
       stringr::str_trim()
   ) %>%
+  
+  # Derive stock type
   dplyr::mutate(
-    'Stock Type' = stringr::str_replace_all(`Security Name`, ' - |\\([A-z\\s]*\\)', '') %>%
+    `Stock Type` = stringr::str_replace_all(`Security Name`, ' - |\\([A-z\\s]*\\)', '') %>%
       stringr::str_replace(`Company Name`, '') %>%
       stringr::str_trim() %>%
       { ifelse(is.na(.) | . == '', 'Common Stock', .) }
   )
 
-tickerList <- intersect(tickerList, dplyr::pull(metaDF, `Symbol`)) %>%
+# Filter and name your final list
+tickerList <- intersect(tickerList, dplyr::pull(metaDF, Symbol)) %>%
   rlang::set_names(dplyr::pull(metaDF, `Company Name`))
+
 
 
 GPT <- reticulate::import_from_path('GPT', 'src/components/modules/LLM', convert = T)

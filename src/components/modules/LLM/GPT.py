@@ -15,6 +15,7 @@ CHATGPT_API_KEY = 'sk-proj-AKLeevKwOxfmw-SM0gqY3I9NbaQ5NPZ59F3usMnMfSm5f1CSO_qNz
 NEWS_API_KEY = [
   'EyPg9DD2IXsEh4D6tZBEGXeJ1j1EgY6L'
 ][0]
+client = openai.OpenAI(api_key=CHATGPT_API_KEY)
 
 CHATGPT_CONTEXT_NEWS = {
   'role': 'system',
@@ -38,28 +39,24 @@ CHATGPT_CONTEXT = {
   '''
 }
 
-def json_gpt(input: str):
-  openai.api_key = CHATGPT_API_KEY
-  try:
-    completion = openai.ChatCompletion.create(
-      model = CHATGPT_MODEL,
-      messages = [
-        {"role": "system", "content": "Output only valid JSON"},
-        {"role": "user", "content": input}
-      ],
-      temperature = 0,
+def json_gpt(prompt: str):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Output only valid JSON"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0
     )
-  
-    text = completion.choices[0].message.content
-    parsed = json.loads(text)
-  except Exception as e:
-    parsed = f"Error from GPT: {e}"
-  
-  return parsed
+    text = response.choices[0].message.content
+    return json.loads(text)
 
 
 def embeddings(input: list[str]) -> list[list[str]]:
-  response = openai.Embedding.create(model = "text-embedding-ada-002", input = input)
+  response = client.embeddings.create(
+        model="text-embedding-ada-002",
+        input=input
+    )
   return [data.embedding for data in response.data]
 
 
@@ -152,19 +149,15 @@ def generateResponse(companyName, date):
     Include as much information as possible in the answer. Reference the relevant search result urls as markdown links.
     """
     
-    completion = openai.ChatCompletion.create(
-      model = CHATGPT_MODEL,
-      messages = [
-        CHATGPT_CONTEXT,
-        {"role": "user", "content": ANSWER_INPUT}
+    response = client.chat.completions.create(
+      model=CHATGPT_MODEL,
+      messages=[
+          CHATGPT_CONTEXT,
+          {"role": "user", "content": ANSWER_INPUT}
       ],
-      temperature = 0,
-      stream = True
+      temperature=0
     )
-    
-    text = ""
-    for chunk in completion:
-      text += chunk.choices[0].delta.get("content", "")
+    text = response.choices[0].message.content
     
     response = 'As per our investigations, we detected the presence of a financial fraud after analyzing the price related information that you have given. On further investigation and searching, we found that there was a public announcement regarding the ' + companyName + ' shares on date ' + publishingDate + '. The trade happened on date ' + date + '. Since the announcement was made after the date of trade and price fluctuations also indicate the presence of a fraud. Hence, we conclude that this trade can be a potential case of an insider trade...'
   
@@ -196,7 +189,7 @@ def processQuery(query):
     # Make prediction
     data = pd.DataFrame({
       'ds': [date],
-      'y': [float(closePrice)]
+      'y': [float(closePrice.iloc[0])]
     })
     forecast = model.predict(data)
     data.ds = data.ds.astype('datetime64[ns]')
@@ -216,17 +209,17 @@ def processQuery(query):
     
   else:
     print("Generic question sent to GPT", flush=True)
-    openai.api_key = CHATGPT_API_KEY
     messages = [
       CHATGPT_CONTEXT_NEWS,
       {"role": "user", "content": query}
     ]
     try:
-      response = openai.ChatCompletion.create(
-        model = CHATGPT_MODEL,
-        messages = messages,
-        temperature = 0)
-      answer = response.choices[0].message["content"]
+      response = client.chat.completions.create(
+        model=CHATGPT_MODEL,
+        messages=messages,
+        temperature=0
+      )
+      answer = response.choices[0].message.content
     except Exception as e:
       print("GPT call failed:", e, flush=True)
       answer = f"Error from GPT: {e}"
@@ -272,4 +265,3 @@ def get_news(companyName, n = 8):
     #### [{news_record["title"]}]({news_record["link"]})
     <sub>{news_record["published"][0:16]}</sub><details><summary>See Summary...</summary>{news_record["summary"]}</details>
   ''' for _, news_record in news_df.iterrows()])
-

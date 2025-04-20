@@ -98,7 +98,7 @@ py_dependencies <- c(
 if (!("SIH" %in% reticulate::conda_list()$name)) {
   message("Creating 'SIH' Conda environment...")
   reticulate::conda_create("SIH", packages = "python=3.10")
-
+  
   
   # Install everything via pip to avoid conda/pip mixing issues
   reticulate::py_install(
@@ -129,12 +129,12 @@ if (!file.exists("logs/access.log")) {
 robust.system <- function(cmd) {
   stderrFile = tempfile(pattern = "R_robust.system_stderr", fileext = as.character(Sys.getpid()))
   stdoutFile = tempfile(pattern = "R_robust.system_stdout", fileext = as.character(Sys.getpid()))
-
+  
   retval = list()
   retval$exitStatus = system(paste0(cmd, " 2> ", shQuote(stderrFile), " > ", shQuote(stdoutFile)))
   retval$stdout = readLines(stdoutFile)
   retval$stderr = readLines(stderrFile)
-
+  
   unlink(c(stdoutFile, stderrFile))
   return(retval)
 }
@@ -157,7 +157,7 @@ check_package <- function(x) {
 
 provided <- function(data, condition, call, call2 = NULL) {
   condition <- ifelse(is.logical(condition), condition, rlang::eval_tidy(rlang::enquo(condition), data))
-
+  
   if (condition) {
     rlang::eval_tidy(rlang::quo_squash(rlang::quo(data %>% !!rlang::enquo(call))))
   } else if (!is.null(call2)) {
@@ -166,15 +166,15 @@ provided <- function(data, condition, call, call2 = NULL) {
 }
 
 formatDTDisplay <- function(
-  x, selectChoice = 'multiple', currencyCol = NULL, roundCol = NULL, roundDigit = 2, rownames = F,
-  pagelen = 50, scrollX = T, scrollY = "500px", dom = 'T<"clear">lBfrtip'
+    x, selectChoice = 'multiple', currencyCol = NULL, roundCol = NULL, roundDigit = 2, rownames = F,
+    pagelen = 50, scrollX = T, scrollY = "500px", dom = 'T<"clear">lBfrtip'
 ) {
   DT::datatable(x,
-    selection = selectChoice, rownames = rownames, filter = 'top', escape = F,
-    options = list(pageLength = pagelen, dom = dom, scrollX = scrollX, scrollY = scrollY)
+                selection = selectChoice, rownames = rownames, filter = 'top', escape = F,
+                options = list(pageLength = pagelen, dom = dom, scrollX = scrollX, scrollY = scrollY)
   ) %>%
-  provided(!is.null(currencyCol), DT::formatCurrency(currencyCol, currency = "", interval = 3, mark = ",")) %>%
-  provided(!is.null(roundCol), DT::formatRound(roundCol, digits = roundDigit))
+    provided(!is.null(currencyCol), DT::formatCurrency(currencyCol, currency = "", interval = 3, mark = ",")) %>%
+    provided(!is.null(roundCol), DT::formatRound(roundCol, digits = roundDigit))
 }
 
 modify_stop_propagation <- function(x) {
@@ -196,17 +196,17 @@ create_btns <- function(x, ns = shiny::NS(''), username = NULL, admin = F) {
     x %>%
       purrr::map_chr(~ as.character(
         htmltools::div(class = "btn-group",
-          if (shiny::isTruthy(.x)) {
-            shiny::actionButton(ns(paste0('edit_', .x)), '', icon = shiny::icon('edit'), class = 'btn-info', onclick = 'get_id(this.id)')
-          } else {
-            shiny::actionButton(ns(paste0('new_', .x)), '', icon = shiny::icon('plus'), class = 'btn-success', onclick = 'get_id(this.id)')
-          },
-          if (shiny::isTruthy(.x)) {
-            shiny::actionButton(ns(paste0('reset_', .x)), '', icon = shiny::icon('key'), class = 'btn-warning', onclick = 'get_id(this.id)')
-          },
-          if (.x != username && shiny::isTruthy(.x)) {
-            shiny::actionButton(ns(paste0('delete_', .x)), '', icon = shiny::icon('trash-alt'), class = 'btn-danger', onclick = 'get_id(this.id)')
-          }
+                       if (shiny::isTruthy(.x)) {
+                         shiny::actionButton(ns(paste0('edit_', .x)), '', icon = shiny::icon('edit'), class = 'btn-info', onclick = 'get_id(this.id)')
+                       } else {
+                         shiny::actionButton(ns(paste0('new_', .x)), '', icon = shiny::icon('plus'), class = 'btn-success', onclick = 'get_id(this.id)')
+                       },
+                       if (shiny::isTruthy(.x)) {
+                         shiny::actionButton(ns(paste0('reset_', .x)), '', icon = shiny::icon('key'), class = 'btn-warning', onclick = 'get_id(this.id)')
+                       },
+                       if (.x != username && shiny::isTruthy(.x)) {
+                         shiny::actionButton(ns(paste0('delete_', .x)), '', icon = shiny::icon('trash-alt'), class = 'btn-danger', onclick = 'get_id(this.id)')
+                       }
         )
       ))
   }
@@ -222,18 +222,18 @@ create_delete_btns <- function(x, ns = shiny::NS('')) {
 
 getClusters <- function(selectedDate) {
   purrr::map(list.files('db/NASDAQ/market_data'),
-    ~ readr::read_csv(sprintf('db/NASDAQ/market_data/%s', .x), show_col_types = F) %>%
-      dplyr::mutate(
-        'Ticker' = stringr::str_extract(.x, '[A-Z]*(?=\\.csv)'),
-        'Volume Change' = 100 * (`Volume` - dplyr::lag(`Volume`)) / `Volume`,
-        'Open Change' = 100 * (`Open` - dplyr::lag(`Open`)) / `Open`, 'Close Change' = 100 * (`Close` - dplyr::lag(`Close`)) / `Close`,
-        'High Change' = 100 * (`High` - dplyr::lag(`High`)) / `High`, 'Low Change' = 100 * (`Low` - dplyr::lag(`Low`)) / `Low`
-      ) %>%
-      dplyr::select(
-        `Ticker`, `Date`, `Volume`, `Volume Change`,
-        `Open`, `Open Change`, `Close`, `Close Change`,
-        `High`, `High Change`, `Low`, `Low Change`
-      )
+             ~ readr::read_csv(sprintf('db/NASDAQ/market_data/%s', .x), show_col_types = F) %>%
+               dplyr::mutate(
+                 'Ticker' = stringr::str_extract(.x, '[A-Z]*(?=\\.csv)'),
+                 'Volume Change' = 100 * (`Volume` - dplyr::lag(`Volume`)) / `Volume`,
+                 'Open Change' = 100 * (`Open` - dplyr::lag(`Open`)) / `Open`, 'Close Change' = 100 * (`Close` - dplyr::lag(`Close`)) / `Close`,
+                 'High Change' = 100 * (`High` - dplyr::lag(`High`)) / `High`, 'Low Change' = 100 * (`Low` - dplyr::lag(`Low`)) / `Low`
+               ) %>%
+               dplyr::select(
+                 `Ticker`, `Date`, `Volume`, `Volume Change`,
+                 `Open`, `Open Change`, `Close`, `Close Change`,
+                 `High`, `High Change`, `Low`, `Low Change`
+               )
   ) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate('Year' = stringr::str_extract(`Date`, '[0-9]{4}')) %>%
@@ -278,23 +278,56 @@ tickerList <- intersect(
   stringr::str_extract(list.files('db/NASDAQ/insider_data'), '^[A-Z]*(?=\\.)')
 )
 
-metaDF <- readr::read_csv('db/NASDAQ/meta.csv', show_col_types = F) %>%
-  dplyr::filter(`Symbol` %in% tickerList) %>%
+# metaDF <- readr::read_csv('db/NASDAQ/meta.csv', show_col_types = F) %>%
+#   dplyr::filter(`Symbol` %in% tickerList) %>%
+#   dplyr::mutate(
+#     'Company Name' = stringr::str_replace_all(`Security Name`, '-|\\([A-z\\s]*\\)', '') %>%
+#       { ifelse(stringr::str_detect(., 'Common|Index|Ordinary'), stringr::str_extract(., '.*(?=(\\s)(Common|Index|Ordinary))'), .) } %>%
+#       { ifelse(stringr::str_detect(., 'Class'), stringr::str_extract(., '.*(?=(\\s)(Class [A-Z]))'), .) } %>%
+#       stringr::str_trim()
+#   ) %>%
+#   dplyr::mutate(
+#     'Stock Type' = stringr::str_replace_all(`Security Name`, ' - |\\([A-z\\s]*\\)', '') %>%
+#       stringr::str_replace(`Company Name`, '') %>%
+#       stringr::str_trim() %>%
+#       { ifelse(is.na(.) | . == '', 'Common Stock', .) }
+#   )
+# 
+# tickerList <- intersect(tickerList, dplyr::pull(metaDF, `Symbol`)) %>%
+#   rlang::set_names(dplyr::pull(metaDF, `Company Name`))
+
+# Read and clean nasdaqlisted.txt
+metaDF <- readr::read_delim(
+  file = 'db/NASDAQ/nasdaqlisted.txt',
+  delim = "|",
+  show_col_types = FALSE
+) %>%
+  # Drop the last row if it's the file creation note
+  dplyr::filter(!stringr::str_detect(Symbol, "File Creation Time")) %>%
+  
+  # Filter to your tickers of interest
+  dplyr::filter(Symbol %in% tickerList) %>%
+  
+  # Clean company names
   dplyr::mutate(
-    'Company Name' = stringr::str_replace_all(`Security Name`, '-|\\([A-z\\s]*\\)', '') %>%
+    `Company Name` = stringr::str_replace_all(`Security Name`, '-|\\([A-z\\s]*\\)', '') %>%
       { ifelse(stringr::str_detect(., 'Common|Index|Ordinary'), stringr::str_extract(., '.*(?=(\\s)(Common|Index|Ordinary))'), .) } %>%
       { ifelse(stringr::str_detect(., 'Class'), stringr::str_extract(., '.*(?=(\\s)(Class [A-Z]))'), .) } %>%
       stringr::str_trim()
   ) %>%
+  
+  # Derive stock type
   dplyr::mutate(
-    'Stock Type' = stringr::str_replace_all(`Security Name`, ' - |\\([A-z\\s]*\\)', '') %>%
+    `Stock Type` = stringr::str_replace_all(`Security Name`, ' - |\\([A-z\\s]*\\)', '') %>%
       stringr::str_replace(`Company Name`, '') %>%
       stringr::str_trim() %>%
       { ifelse(is.na(.) | . == '', 'Common Stock', .) }
   )
 
-tickerList <- intersect(tickerList, dplyr::pull(metaDF, `Symbol`)) %>%
+# Filter and name your final list
+tickerList <- intersect(tickerList, dplyr::pull(metaDF, Symbol)) %>%
   rlang::set_names(dplyr::pull(metaDF, `Company Name`))
+
 
 
 GPT <- reticulate::import_from_path('GPT', 'src/components/modules/LLM', convert = T)
@@ -331,9 +364,9 @@ addDeps <- function(tag, options = NULL, ...) {
   # always use minified files (https://www.minifier.org)
   adminLTE_js <- ifelse(getOption("shiny.minified", T), "js/app.min.js", "js/app.js")
   shinydashboardPlus_js <- ifelse(getOption("shiny.minified", T), "js/shinydashboardPlus.min.js", "js/shinydashboardPlus.js")
-
+  
   pkg_version <- as.character(utils::packageVersion("shinydashboardPlus"))
-
+  
   dashboardDeps <- list(
     # custom adminLTE js and css for shinydashboardPlus
     htmltools::htmlDependency(
@@ -361,7 +394,7 @@ addDeps <- function(tag, options = NULL, ...) {
       stylesheet = "shinydashboard.css"
     )
   )
-
+  
   shiny::tagList(tag, dashboardDeps)
 }
 
@@ -369,7 +402,7 @@ dashboardUI <- function(header, sidebar, body, scrollToTop = F, ...) {
   extractTitle <- function(header) {
     x <- header$children[[1]]
     if (x$name == "span" && !is.null(x$attribs$class) && x$attribs$class == "logo" && length(x$children) != 0) {
-        x$children[[1]]
+      x$children[[1]]
     } else {
       ""
     }
@@ -377,7 +410,7 @@ dashboardUI <- function(header, sidebar, body, scrollToTop = F, ...) {
   title <- extractTitle(header)
   
   content <- htmltools::div(class = "wrapper", header, sidebar, body)
-
+  
   addDeps(htmltools::tags$body(
     `data-scrollToTop` = as.numeric(scrollToTop),
     class = 'hold-transition skin-blue', `data-skin` = 'blue', style = "min-height: 611px;",

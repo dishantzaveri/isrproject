@@ -210,3 +210,4 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+db/

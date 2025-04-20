@@ -115,6 +115,6 @@ data_collector_agent = Agent(
         "3. If less than 5 press releases are found from Yahoo Finance, search the web for more news articles. The columns for press releases table are:  Date, Title, Summary, Link.",
         "Display the results in a markdown table format.",
     ],
-    debug_mode=True,
+    # debug_mode=True,
     add_datetime_to_instructions=True
 )

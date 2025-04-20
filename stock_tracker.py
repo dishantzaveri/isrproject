@@ -52,5 +52,5 @@ stock_tracker_agent = Agent(
     markdown=True,
     instructions="Gather daily share price data for the past 3 months for a given stock. The columns should be: date, open, high, low, close, volume. Display the results in a markdwon table format.",
     add_datetime_to_instructions=True,
-    debug_mode=True,
+    # debug_mode=True,
 )

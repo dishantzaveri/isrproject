@@ -5,7 +5,6 @@ I am trying to build a team of AI agents to detect insider trading. Here's my te
 1. The 'data collector' agent will be responsible collecting data from various sources such as FinHub API (ie: https://www.finnhub.io/docs/api/insider-transactions), Yahoo Finance API for company press releases and other information.
 2. The 'stock tracker' agent will collect real-time and historical stock price data. 
 3. The 'insider trading detective' agent will analyze data from the 'data collector' and 'stock tracker' agents detect suspicious trading activity by company insiders (such as buying/selling stocks, bonds, options and other securities derivatives of that company or related companies) prior to some company-related market-moving news. Insider trading, at its core, is the use of material, nonpublic information to trade in the securities of a company prior to a material market-moving news event.
-4. The 'journalist' agent will report on this information of suspicious insider trading activity, backed by sources, in a nice, coherent article (in the markdown format).
 
 Does this make sense to you? Let me know if I should change/add/remove something? Share your thoughts on this agentic system workflow?
 
@@ -40,24 +39,5 @@ Your proposed multi-agent system has a solid overall structure for tackling the 
   - **Legal and Regulatory Aspects:** Since the legal boundaries around insider trading are nuanced, it might be beneficial to have a legal expert’s guidelines or even integrate some form of a compliance check within this agent.
   - **Contextual Analysis:** Analyze not just the raw data from the data collector but also consider market sentiment and external events. This can help avoid false positives and ensure that benign insider activity (which might be legally compliant) isn’t mistakenly flagged as malicious.
 
-#### **Journalist Agent**
-- **Coherent and Credible Reporting:**  
-  The idea to use an agent that produces a coherent markdown article backed by data and sources is excellent. Consider:
-  - **Explainability:** Make sure the reports include explanations of the analysis methods and the data sources used. This transparency adds credibility, which is crucial when reporting on such sensitive issues.
-  - **User-Friendly Output:** Ensure that the narrative is accessible to both experts and non-experts, which might require different report formats or summaries alongside detailed technical insights.
-  - **Pre-Publication Review:** As the final output might have significant legal implications, having a validation step (either automated or human-in-the-loop) to check the reporting against potential reputational or legal risks could be worthwhile.
-
-#### **Additional Suggestions**
-- **Error Handling & Data Reconciliation:**  
-  Ensure that each agent has robust error handling, especially when integrating data from multiple APIs. Establish a central data repository where intermediate results can be stored and cross-verified.
-  
-- **Communication Protocols:**  
-  Define clear communication protocols among the agents. Whether you use a message bus or a publish/subscribe model, having a reliable communication mechanism is key to ensuring that insights from the stock tracker and data collector are effectively used by the insider trading detective.
-
-- **Feedback Loop:**  
-  Consider integrating a feedback loop—the system could learn from past analysis to refine its detection criteria over time, improving accuracy and reducing false positives.
-
-- **Naming & Role Clarity:**  
-  While the term “insider trading detective” is catchy, you might want to consider a name that reflects its role accurately (e.g., “suspicious activity analyzer”) to emphasize that it is part of an analytical, risk-scoring system rather than a legal arbiter.
 
 Overall, your workflow is well thought out, and with some refinements in data integration, legal considerations, and communication protocols, it should form a very robust base for detecting suspicious insider trading activities. Good luck with your project!

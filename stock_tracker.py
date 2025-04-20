@@ -6,8 +6,9 @@ from agno.tools.yfinance import YFinanceTools
 import httpx
 import json
 import os
+from dotenv import load_dotenv
 
-assert os.getenv("GOOGLE_API_KEY"), "Please set the GOOGLE_API_KEY environment variable"
+load_dotenv()
 
 
 @tool(
@@ -43,12 +44,13 @@ def get_stock_price_daily(ticker: str) -> str:
 
 
 stock_tracker_agent = Agent(
+    name="stock tracker",
     model=Gemini(id="gemini-2.0-flash"),
     tools=[get_stock_price_daily, YFinanceTools(stock_price=True)],
-    description="You track stock prices",
+    role="Share price tracking",
     show_tool_calls=True,
     markdown=True,
-    instructions="Display the results in a table format.",
+    instructions="Gather daily share price data for the past 3 months for a given stock. The columns should be: date, open, high, low, close, volume. Display the results in a markdwon table format.",
+    add_datetime_to_instructions=True,
     debug_mode=True,
 )
-stock_tracker_agent.print_response("Get daily stock prices for AAPL", stream=True)

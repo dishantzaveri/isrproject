@@ -137,32 +137,83 @@ InsiderRelationsModule <- function(input, output, session, pageName, appData, ..
     req(input$insiderID)
 
     filtered <- df[df$`Insider Trading` == input$insiderID, ]
+    if (nrow(filtered) == 0) {
+      return(visNetwork::visNetwork(nodes = data.frame(id = character(0)), 
+                                    edges = data.frame(from = character(0), to = character(0))))
+    }
+    
 
+    # nodes <- data.frame(
+    #   id = unique(c(filtered$`Insider Trading`, filtered$Relationship)),
+    #   label = unique(c(filtered$`Insider Trading`, filtered$Relationship)),
+    #   color = ifelse(
+    #     unique(c(filtered$`Insider Trading`, filtered$Relationship)) == input$insiderID,
+    #     "#00b5ff",  # Insider
+    #     "#ffcc00"   # Role
+    #   ),
+    #   font = list(color = "#ffffff", size = 16)
+    # )
+    # 
+    # edges <- data.frame(
+    #   from = filtered$`Insider Trading`,
+    #   to = filtered$Relationship,
+    #   # label = paste("Date:", filtered$Date),
+    #   arrows = "to",
+    #   color = list(color = "#ffffff", highlight = "#ff6666", hover = "#66ffcc"),
+    #   font = list(color = "#ffffff", size = 12)
+    # )
+    # 
+    # visNetwork(nodes, edges, height = "600px", width = "100%") %>%
+    #   visEdges(smooth = list(enabled = TRUE, type = "dynamic")) %>%
+    #   visOptions(highlightNearest = TRUE, nodesIdSelection = FALSE) %>%
+    #   visInteraction(navigationButtons = TRUE) %>%
+    #   visLayout(improvedLayout = TRUE, randomSeed = 42)
+    
+    insiders <- as.character(filtered$`Insider Trading`)
+    roles <- as.character(filtered$Relationship)
+    
+    ids <- unique(c(insiders, roles))
+    
     nodes <- data.frame(
-      id = unique(c(filtered$`Insider Trading`, filtered$Relationship)),
-      label = unique(c(filtered$`Insider Trading`, filtered$Relationship)),
+      id = ids,
+      label = ids,
+      shape = ifelse(ids %in% insiders, "box", "ellipse"),
       color = ifelse(
-        unique(c(filtered$`Insider Trading`, filtered$Relationship)) == input$insiderID,
-        "#00b5ff",  # Insider
-        "#ffcc00"   # Role
+        ids == input$insiderID,
+        "#00b5ff",
+        "#ffcc00"
       ),
       font = list(color = "#ffffff", size = 16)
     )
-
+    edge_data <- filtered %>%
+      dplyr::group_by(`Insider Trading`, Relationship) %>%
+      dplyr::summarise(
+        trade_count = n(),
+        total_value = sum(`Value ($)`, na.rm = TRUE),
+        .groups = 'drop'
+      ) %>%
+      dplyr::mutate(
+        label = paste0(
+          "Trades: ", trade_count,
+          " | Value: $", formatC(total_value / 1e6, digits = 2, format = "f"), "M"
+        )
+      )
     edges <- data.frame(
-      from = filtered$`Insider Trading`,
-      to = filtered$Relationship,
-      # label = paste("Date:", filtered$Date),
+      from = edge_data$`Insider Trading`,
+      to = edge_data$Relationship,
+      label = edge_data$label,
       arrows = "to",
-      color = list(color = "#ffffff", highlight = "#ff6666", hover = "#66ffcc"),
-      font = list(color = "#ffffff", size = 12)
+      color = list(color = "#cccccc", highlight = "#ff6666", hover = "#66ffcc"),
+      font = list(color = "#ffffff", size = 14)
     )
-
+    
     visNetwork(nodes, edges, height = "600px", width = "100%") %>%
       visEdges(smooth = list(enabled = TRUE, type = "dynamic")) %>%
+      visPhysics(solver = "repulsion", repulsion = list(nodeDistance = 200)) %>%
       visOptions(highlightNearest = TRUE, nodesIdSelection = FALSE) %>%
       visInteraction(navigationButtons = TRUE) %>%
-      visLayout(improvedLayout = TRUE, randomSeed = 42)
+      visLayout(improvedLayout = TRUE)
+    
   })
 }
 

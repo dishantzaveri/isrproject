@@ -1,0 +1,8 @@
+yfinance
+agno
+finnhub-python
+googlesearch-python
+google-genai
+httpx
+openai
+streamlit

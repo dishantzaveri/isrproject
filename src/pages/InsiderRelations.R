@@ -66,6 +66,18 @@ InsiderRelationsModuleUI <- function(id) {
         table.dataTable thead th {
           color: white !important;
         }
+        .vis-navigation .vis-button {
+          filter: none !important;
+          background-color: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
+
+        .vis-navigation .vis-button:before {
+          color: white !important;
+          font-size: 16px;
+        }
+
       ")),
 
     htmltools::tags$div(
@@ -211,7 +223,7 @@ InsiderRelationsModule <- function(input, output, session, pageName, appData, ..
       visEdges(smooth = list(enabled = TRUE, type = "dynamic")) %>%
       visPhysics(solver = "repulsion", repulsion = list(nodeDistance = 200)) %>%
       visOptions(highlightNearest = TRUE, nodesIdSelection = FALSE) %>%
-      visInteraction(navigationButtons = TRUE) %>%
+      # visInteraction(navigationButtons = TRUE) %>%
       visLayout(improvedLayout = TRUE)
     
   })

@@ -1,4 +1,6 @@
-# Insider Trading Detection System
+# Insider Trading Detection System 
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tamu-insidertrading.streamlit.app)
 
 This project leverages agentic AI (using the Agno framework) to detect suspicious insider trading activity by analyzing insider transactions, stock prices, sentiment, and public announcements.
 

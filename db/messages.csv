@@ -158,3 +158,23 @@ If you do not have access to real-time data, you may need to wait for the offici
    - If the buyer or seller has any direct or indirect connection to Amazon (AMZN) or its insiders
 
 Once we have this information, we can analyze the data to determine if there are any red flags or indications of potential insider trading.",1745192365,0
+0000009,admin,Identify if there is any possibility of insider trade for the trade of shares of AAPL on date 2025-04-16,1745194099,0
+0000009,llm,"As per our investigations, we detected the presence of a financial fraud after analyzing the price related information that you have given. On further investigation and searching, we found that there was a public announcement regarding the AAPL shares on date 2025-04-14T12:58:59+00:00. The trade happened on date 2025-04-16,2025-04-09. Since the announcement was made after the date of trade and price fluctuations also indicate the presence of a fraud. Hence, we conclude that this trade can be a potential case of an insider trade...To determine the cause of the changes in AAPL stock prices, we can look at the provided search results. Here are the relevant articles that may shed light on the reasons for the fluctuations:
+
+1. **Analysts revise AAPL stock price targets amid tariff exemption**  
+   - Description: Despite temporary tariff exceptions, AAPL stock remains exposed to policy risk. Two major Wall Street firms have revised their outlooks.
+   - [Link to Article](https://finbold.com/analysts-revise-aapl-stock-price-targets-amid-tariff-exemption/)
+
+2. **SA Analyst Rating Upgrades: AAPL, CMI, CLS, NWG (AAPL:NASDAQ)**  
+   - Description: Seeking Alpha analysts have upgraded Apple, Cummins, Celestica, and NatWest.
+   - [Link to Article](https://seekingalpha.com/news/4429861-sa-analyst-rating-upgrades-aapl-cmi-cls-nwg)
+
+3. **Here's Why Apple (AAPL) Fell More Than Broader Market**  
+   - Description: Details the reasons behind Apple's fall compared to the broader market.
+   - [Link to Article](https://www.zacks.com/stock/news/2449451/here-s-why-apple-aapl-fell-more-than-broader-market?cid=CS-ZC-FT-tale_of_the_tape%7Cyseop_template_6-2449451)
+
+4. **SA Analyst Rating Downgrades: VZ, BB, AAPL, PATH (AAPL:NASDAQ)**  
+   - Description: Seeking Alpha analysts downgrade Apple, Blackberry, Verizon, and UiPath.
+   - [Link to Article](https://seekingalpha.com/news/4429833-sa-analyst-rating-downgrades-vz-bb-aapl-path)
+
+By reviewing these articles, we can gather insights into the factors influencing the AAPL stock prices, including analyst ratings, tariff exemptions, market trends, and company-specific developments.",1745194107,0

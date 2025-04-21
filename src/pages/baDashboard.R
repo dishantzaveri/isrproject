@@ -2,123 +2,123 @@
 
 
 baDashboardModuleUI <- function(id) {
-	ns <- NS(id)
-	
-	htmltools::tagList(
-  	htmltools::div(class = 'page bg-dashboard tab-page', 
-  	  htmltools::div(class = 'card-wrapper',
-        htmltools::div(class = 'trade-select',
-          htmltools::img(class = 'brain', src = 'img/icons/Icon-Brain.svg'),
-          shinyWidgets::pickerInput(ns('selectedCompany'), label = 'Company',
-            selected = as.character(tickerList)[1],
-            choices = as.character(tickerList),  choicesOpt = list(subtext = names(tickerList)),
-            options = list(title = 'Ticker Symbol', `live-search` = T, `liveSearchNormalize` = T)
-          )
-        ),
-        TradeCardModuleUI(ns('TradeCard'))
-      ),
-      shiny::tabsetPanel(id = ns('analysisTabSet'), type = 'pills',
-        shiny::tabPanel(title = 'Company', class = 'analysis-tabs', value = 'Company',
-          htmltools::div(class = 'dashnav-text',
-            htmltools::div(class = 'icon', htmltools::img(src = 'img/icons/icon-info.svg')),
-            htmltools::div(class = 'text', htmltools::tags$b(class = 'bolded', 'Company'),
-              'provides statistics of abnormaly indicators and information on crucial contextual information of recent price movements.'
-            )
-          ),
-          htmltools::div(class = 'dashboard-content-wrapper', style = 'flex-direction: row; gap: .75rem; padding: 0;',
-            htmltools::div(class = 'plot-holder',
-              htmltools::div(class = 'plot-card plot-card-large',
-                shinycssloaders::withSpinner(plotly::plotlyOutput(ns('clusterPlot'), height = '30vh'), hide.ui = F),
-                htmltools::div(class = 'text',
-                  'Companies are clustered with S&P500 based on their market movement of the day.',
-                  'If price movement coincides with the general market movement and does not lie in the outlier cluster,',
-                  'there is not need to investigate further on the particular counter.'
-                )
-              ),
-              # htmltools::div(class = 'plot-card dark-dt full-dt cluster-dt',
-              #   shinycssloaders::withSpinner(DT::DTOutput(ns('clusterDT'), height = '35vh'), hide.ui = F)
-              # ),
-              htmltools::div(class = 'plot-card',
-                shinycssloaders::withSpinner(plotly::plotlyOutput(ns('marketPricePlot'), height = '30vh'), hide.ui = F),
-                htmltools::div(class = 'text',
-                  'This plot shows there is a drop in price once there is a sale or option exercise transaction.', 
-                  'So we can draw a conclusion that they influenced the drop in price.', 
-                  'This shows that their activities have a huge impact on the market price and they are the main players driving the price.'
-                )
-              ),
-              htmltools::div(class = 'plot-card',
-                shinycssloaders::withSpinner(plotly::plotlyOutput(ns('insiderMarketPlot'), height = '30vh'), hide.ui = F),
-                htmltools::div(class = 'text',
-                  'This plot compares the volume of insider sales (over time) to the volume of sales in the S&P 500 (over time).', 
-                  'They are characterized by a tendency to increase their sales during market upswings and increase their purchases during downturns.', 
-                  'It has been observed that insiders are net buyers of low P/E stocks and net sellers of high P/E stocks.'
-                )
-              )
-            )
-          )
-        ),
-        shiny::tabPanel(title = 'Account', class = 'analysis-tabs', value = 'Account',
-          htmltools::div(class = 'dashnav-text',
-            htmltools::div(class = 'icon', htmltools::img(src = 'img/icons/icon-info.svg')),
-            htmltools::div(class = 'text', htmltools::tags$b(class = 'bolded', 'Account'),
-              'provides statistics and analysis on abnormalies indicators of all trades done by an account.'
-            )
-          ),
-          htmltools::div(class = 'dashboard-content-wrapper',
-            shiny::inputPanel(
-              shiny::dateRangeInput(ns('accountFilter'), label = 'Date',
-                start = Sys.Date() - 365 * 2, end = Sys.Date(), min = Sys.Date() - 365 * 5, max = Sys.Date()
-              )
-            ),
-            htmltools::div(class = 'dark-dt full-dt', DT::DTOutput(ns('accountDT')))
-          )
-        ),
-        shiny::tabPanel(title = 'Market Data', class = 'analysis-tabs', value = 'Market',
-          htmltools::div(class = 'dashnav-text',
-            htmltools::div(class = 'icon', htmltools::img(src = 'img/icons/icon-info.svg')),
-            htmltools::div(class = 'text', htmltools::tags$b(class = 'bolded', 'Market'),
-              'market information on counter'
-            )
-          ),
-          htmltools::div(class = 'dashboard-content-wrapper',
-            htmltools::div(class = 'plot-holder',
-              htmltools::div(class = 'plot-card plot-card-large',
-                shinycssloaders::withSpinner(plotly::plotlyOutput(ns('marketMovementPlot'), height = '75vh'), hide.ui = F)
-              )
-            )
-          )
-        )
-      )
+  ns <- NS(id)
+  
+  htmltools::tagList(
+    htmltools::div(class = 'page bg-dashboard tab-page', 
+                   htmltools::div(class = 'card-wrapper',
+                                  htmltools::div(class = 'trade-select',
+                                                 htmltools::img(class = 'brain', src = 'img/icons/Icon-Brain.svg'),
+                                                 shinyWidgets::pickerInput(ns('selectedCompany'), label = 'Company',
+                                                                           selected = as.character(tickerList)[1],
+                                                                           choices = as.character(tickerList),  choicesOpt = list(subtext = names(tickerList)),
+                                                                           options = list(title = 'Ticker Symbol', `live-search` = T, `liveSearchNormalize` = T)
+                                                 )
+                                  ),
+                                  TradeCardModuleUI(ns('TradeCard'))
+                   ),
+                   shiny::tabsetPanel(id = ns('analysisTabSet'), type = 'pills',
+                                      shiny::tabPanel(title = 'Company', class = 'analysis-tabs', value = 'Company',
+                                                      htmltools::div(class = 'dashnav-text',
+                                                                     htmltools::div(class = 'icon', htmltools::img(src = 'img/icons/icon-info.svg')),
+                                                                     htmltools::div(class = 'text', htmltools::tags$b(class = 'bolded', 'Company'),
+                                                                                    'provides statistics of abnormaly indicators and information on crucial contextual information of recent price movements.'
+                                                                     )
+                                                      ),
+                                                      htmltools::div(class = 'dashboard-content-wrapper', style = 'flex-direction: row; gap: .75rem; padding: 0;',
+                                                                     htmltools::div(class = 'plot-holder',
+                                                                                    htmltools::div(class = 'plot-card plot-card-large',
+                                                                                                   shinycssloaders::withSpinner(plotly::plotlyOutput(ns('clusterPlot'), height = '30vh'), hide.ui = F),
+                                                                                                   htmltools::div(class = 'text',
+                                                                                                                  'Companies are clustered with S&P500 based on their market movement of the day.',
+                                                                                                                  'If price movement coincides with the general market movement and does not lie in the outlier cluster,',
+                                                                                                                  'there is not need to investigate further on the particular counter.'
+                                                                                                   )
+                                                                                    ),
+                                                                                    # htmltools::div(class = 'plot-card dark-dt full-dt cluster-dt',
+                                                                                    #   shinycssloaders::withSpinner(DT::DTOutput(ns('clusterDT'), height = '35vh'), hide.ui = F)
+                                                                                    # ),
+                                                                                    htmltools::div(class = 'plot-card',
+                                                                                                   shinycssloaders::withSpinner(plotly::plotlyOutput(ns('marketPricePlot'), height = '30vh'), hide.ui = F),
+                                                                                                   htmltools::div(class = 'text',
+                                                                                                                  'This plot shows there is a drop in price once there is a sale or option exercise transaction.', 
+                                                                                                                  'So we can draw a conclusion that they influenced the drop in price.', 
+                                                                                                                  'This shows that their activities have a huge impact on the market price and they are the main players driving the price.'
+                                                                                                   )
+                                                                                    ),
+                                                                                    htmltools::div(class = 'plot-card',
+                                                                                                   shinycssloaders::withSpinner(plotly::plotlyOutput(ns('insiderMarketPlot'), height = '30vh'), hide.ui = F),
+                                                                                                   htmltools::div(class = 'text',
+                                                                                                                  'This plot compares the volume of insider sales (over time) to the volume of sales in the S&P 500 (over time).', 
+                                                                                                                  'They are characterized by a tendency to increase their sales during market upswings and increase their purchases during downturns.', 
+                                                                                                                  'It has been observed that insiders are net buyers of low P/E stocks and net sellers of high P/E stocks.'
+                                                                                                   )
+                                                                                    )
+                                                                     )
+                                                      )
+                                      ),
+                                      shiny::tabPanel(title = 'Account', class = 'analysis-tabs', value = 'Account',
+                                                      htmltools::div(class = 'dashnav-text',
+                                                                     htmltools::div(class = 'icon', htmltools::img(src = 'img/icons/icon-info.svg')),
+                                                                     htmltools::div(class = 'text', htmltools::tags$b(class = 'bolded', 'Account'),
+                                                                                    'provides statistics and analysis on abnormalies indicators of all trades done by an account.'
+                                                                     )
+                                                      ),
+                                                      htmltools::div(class = 'dashboard-content-wrapper',
+                                                                     shiny::inputPanel(
+                                                                       shiny::dateRangeInput(ns('accountFilter'), label = 'Date',
+                                                                                             start = Sys.Date() - 365 * 2, end = Sys.Date(), min = Sys.Date() - 365 * 5, max = Sys.Date()
+                                                                       )
+                                                                     ),
+                                                                     htmltools::div(class = 'dark-dt full-dt', DT::DTOutput(ns('accountDT')))
+                                                      )
+                                      ),
+                                      shiny::tabPanel(title = 'Market Data', class = 'analysis-tabs', value = 'Market',
+                                                      htmltools::div(class = 'dashnav-text',
+                                                                     htmltools::div(class = 'icon', htmltools::img(src = 'img/icons/icon-info.svg')),
+                                                                     htmltools::div(class = 'text', htmltools::tags$b(class = 'bolded', 'Market'),
+                                                                                    'market information on counter'
+                                                                     )
+                                                      ),
+                                                      htmltools::div(class = 'dashboard-content-wrapper',
+                                                                     htmltools::div(class = 'plot-holder',
+                                                                                    htmltools::div(class = 'plot-card plot-card-large',
+                                                                                                   shinycssloaders::withSpinner(plotly::plotlyOutput(ns('marketMovementPlot'), height = '75vh'), hide.ui = F)
+                                                                                    )
+                                                                     )
+                                                      )
+                                      )
+                   )
     ),
-	  htmltools::div(class = 'dash-line',
-      shiny::uiOutput(ns('pagetext'), class = 'text'),
-      htmltools::div(id = 'lineunder', class = 'line')
+    htmltools::div(class = 'dash-line',
+                   shiny::uiOutput(ns('pagetext'), class = 'text'),
+                   htmltools::div(id = 'lineunder', class = 'line')
     )
-	)
+  )
 }
 
 
 baDashboardModule <- function(input, output, session, credentials, ...) {
-
-
+  
+  
   # Module Data
   ###############################
-
+  
   # init
   ns <- session$ns
   rlang::env_bind(parent.env(environment()), ...)
   credentials <- shiny::reactive({ shiny::req(session$userData$credentials()) })
   username <- shiny::reactive({ shiny::req(credentials()$info$username) })
   shiny::observe({ appendAccessLog(username(), getwd(), session$ns('name'), '', '') })
-
+  
   ##########################################################################################
-
+  
   companyID <- shiny::reactive({
     companyID <- 'AAPL'
     companyID <- shiny::req(input$selectedCompany)
   })
   
-
+  
   # Page Data
   ###############################
   
@@ -156,7 +156,7 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   insiderTradesDF <- shiny::reactive({
     insiderTradesDF <- readr::read_csv('db/insider.csv', show_col_types = F) %>%
       dplyr::mutate('Transaction Type' = stringr::str_extract(`Transaction Type`, '(?<=[A-Z]\\s-\\s).*')) %>%
-      dplyr::mutate(dplyr::across(dplyr::ends_with('Date'), ~ as.Date(.x, format = '%d/%m/%Y')))
+      dplyr::mutate(dplyr::across(dplyr::ends_with('Date'), ~ as.Date(.x, format = '%d/%m/%y')))
   })
   
   clusterDF <- shiny::reactive({
@@ -170,9 +170,18 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   clusterData <- shiny::reactive({
     clusterDF <- shiny::req(clusterDF())
     
-    marketDFN <- dplyr::select(clusterDF, -`Ticker`, -`Date`, -`Year`) %>%
-      as.matrix() %>%
-      clusterSim::data.Normalization(type = 'n1', normalization = 'column')
+    marketDFN <- dplyr::select(clusterDF, -Ticker, -Date, -Year)
+    
+    # Drop rows or columns with NA/Inf — choose based on what makes sense
+    marketDFN <- marketDFN[complete.cases(marketDFN), ]
+    marketDFN <- as.matrix(marketDFN)
+    marketDFN[!is.finite(marketDFN)] <- 0  # Replace Inf/-Inf with 0 to avoid crash
+    
+    marketDFN <- clusterSim::data.Normalization(marketDFN, type = 'n1', normalization = 'column')
+    
+    # marketDFN <- dplyr::select(clusterDF, -`Ticker`, -`Date`, -`Year`) %>%
+    #    as.matrix() %>%
+    #    clusterSim::data.Normalization(type = 'n1', normalization = 'column')
     
     PCA1 <- prcomp(marketDFN, center = F, scale. = F)
     PCA2 <- prcomp(marketDFN, center = F, scale. = F, rank. = nrow(dplyr::filter(factoextra::get_eigenvalue(PCA1), `eigenvalue` > 1)))
@@ -212,10 +221,10 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   })
   
   shiny::callModule(TradeCardModuleServer, 'TradeCard', username = username,
-    companyID = companyID, marketDF = marketDF
+                    companyID = companyID, marketDF = marketDF
   )
-
-	####################################################################
+  
+  ####################################################################
   
   output$marketPricePlot <- plotly::renderPlotly({
     marketDF <- shiny::req(marketDF())
@@ -284,19 +293,53 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   #   shiny::markdown(llmAnalysis)
   # })
   
+  # output$accountDT <- DT::renderDT({
+  #   insiderTradesDF <- shiny::req(insiderTradesDF())
+  #   companyID <- shiny::req(companyID())
+  #   accountFilter <- shiny::req(input$accountFilter)
+  #   
+  #   dplyr::filter(insiderTradesDF, `Ticker` == companyID) %>%
+  #     dplyr::filter(accountFilter[1] < `Trade Date` & `Trade Date` < accountFilter[2]) %>%
+  #     dplyr::select(
+  #       `Ticker`, `Company`, `Trade Date`, `Insider Name`, `Title`, `Transaction Type`, `Price`, `Quantity`, `Owned`,
+  #       '% Change (Owned)' = `Change of Amount Owned`, `Value`, 'Open Price' = `Date Traded Open`, 'Close Price' = `Date Traded Close`
+  #     ) %>%
+  #     dplyr::mutate(dplyr::across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .x))))
+  # }, selection = 'single', escape = F, rownames = F, editable = F, options = list(pageLength = 100, processing = F, scrollX = T, scrollY = T, dom = 't'))
+  
   output$accountDT <- DT::renderDT({
     insiderTradesDF <- shiny::req(insiderTradesDF())
     companyID <- shiny::req(companyID())
     accountFilter <- shiny::req(input$accountFilter)
     
-    dplyr::filter(insiderTradesDF, `Ticker` == companyID) %>%
+    df <- dplyr::filter(insiderTradesDF, `Ticker` == companyID) %>%
       dplyr::filter(accountFilter[1] < `Trade Date` & `Trade Date` < accountFilter[2]) %>%
       dplyr::select(
         `Ticker`, `Company`, `Trade Date`, `Insider Name`, `Title`, `Transaction Type`, `Price`, `Quantity`, `Owned`,
-        '% Change (Owned)' = `Change of Amount Owned`, `Value`, 'Open Price' = `Date Traded Open`, 'Close Price' = `Date Traded Close`
+        `% Change (Owned)` = `Change of Amount Owned`, `Value`,
+        `Open Price` = `Date Traded Open`, `Close Price` = `Date Traded Close`, `Suspicious`
       ) %>%
       dplyr::mutate(dplyr::across(where(is.numeric), ~ as.numeric(sprintf('%.2f', .x))))
-  }, selection = 'single', escape = F, rownames = F, editable = F, options = list(pageLength = 100, processing = F, scrollX = T, scrollY = T, dom = 't'))
+    
+    DT::datatable(
+      df,
+      selection = 'single', escape = FALSE, rownames = FALSE, editable = FALSE,
+      options = list(
+        pageLength = 100,
+        processing = FALSE,
+        scrollX = TRUE,
+        scrollY = TRUE,
+        dom = 't',
+        columnDefs = list(list(visible = FALSE, targets = which(names(df) == "Suspicious") - 1))  # hide "Suspicious"
+      )
+    ) %>%
+      DT::formatStyle(
+        columns = 1:ncol(df),
+        target = 'row',
+        valueColumns = "Suspicious",
+        backgroundColor = DT::styleEqual("Yes", "#ffcccc")  # highlight in red if Suspicious == "Yes"
+      )
+  })
   
   output$marketMovementPlot <- plotly::renderPlotly({
     marketDF <- shiny::req(marketDF())
@@ -323,11 +366,11 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
     clusterID <- clusterData$cluster[index]
     
     plot <- plotly::add_trace(plot, type = 'scatter', mode = 'markers', name = companyID, 
-        x = plot$x$data[[clusterID]]$x[[clusterIndex]],
-        y = plot$x$data[[clusterID]]$y[[clusterIndex]],
-        text = stringr::str_replace(plot$x$data[[clusterID]]$text[[clusterIndex]], sprintf('cluster: %d$', clusterID), companyID),
-        marker = list(size = 10, color = '#00FFD1')
-      ) %>%
+                              x = plot$x$data[[clusterID]]$x[[clusterIndex]],
+                              y = plot$x$data[[clusterID]]$y[[clusterIndex]],
+                              text = stringr::str_replace(plot$x$data[[clusterID]]$text[[clusterIndex]], sprintf('cluster: %d$', clusterID), companyID),
+                              marker = list(size = 10, color = '#00FFD1')
+    ) %>%
       plotly::layout(
         xaxis = list(title = 'PC1'), yaxis = list(title = 'PC2'),
         legend = list(orientation = 'h'), title = 'Market Movement Clusters'
@@ -346,7 +389,7 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
   
   output$pagetext <- shiny::renderUI({
     analysisTabSet <- shiny::req(input$analysisTabSet)
-
+    
     htmltools::HTML(analysisTabSet)
   })
 }
@@ -355,13 +398,13 @@ baDashboardModule <- function(input, output, session, credentials, ...) {
 # Page Config
 #################################
 baDashboardPageConfig <- list(
-
+  
   # Title for menu
   'title' = 'Trade Dashboard',
-
+  
   # Icon for menu
   'icon' = 'diagram-project',
-
+  
   # Roles with permission to view page.
   # Exclusion will cause user to be TOTALLY unable to view page
   # Partial permission will have to be controlled within module

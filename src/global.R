@@ -66,7 +66,9 @@ suppressWarnings(suppressMessages(invisible(
 # <package-name> = <module-name>
 py_dependencies <- c(
   'numpy==1.22.3', 'pandas==1.5.2',
-  'openai', 'prophet==1.1.5', 'yahoo_fin', 'requests==2.31.0'
+  'openai',
+  #  'prophet==1.1.5',
+   'yahoo_fin', 'requests==2.31.0'
 )
 
 
@@ -89,7 +91,7 @@ py_dependencies <- c(
   "numpy==1.22.3", 
   "pandas==1.5.2",
   "openai",
-  "prophet",
+  # "prophet",
   "yahoo_fin",
   "requests==2.31.0"
 )

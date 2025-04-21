@@ -16,7 +16,7 @@ AppHeaderUI <- if (packageVersion('shinydashboardPlus') < package_version("1.0.0
 
     # Branding
     title = htmltools::a(href = '#top',
-      htmltools::img(src = 'img/logo/LogoLong.png')
+      htmltools::img(src = 'img/logo/LogoIcon.png')
     ),
 
     # Right Sidebar
@@ -33,7 +33,7 @@ AppHeaderUI <- if (packageVersion('shinydashboardPlus') < package_version("1.0.0
 
     # Branding
     title = htmltools::a(href = '#top',
-      htmltools::img(src = 'img/logo/LogoLong.png')
+      htmltools::img(src = 'img/logo/LogoIcon.png')
     ),
 
     # Right Sidebar

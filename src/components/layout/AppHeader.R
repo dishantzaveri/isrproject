@@ -15,9 +15,12 @@ AppHeaderUI <- if (packageVersion('shinydashboardPlus') < package_version("1.0.0
     widgetUI,
 
     # Branding
-    title = htmltools::a(href = '#top',
-      htmltools::img(src = 'img/logo/LogoIcon.png')
-    ),
+title = htmltools::a(
+  href = "https://tamu-insidertrading.streamlit.app/",  # <-- Replace this with your real URL
+  target = "_blank",  # Opens in new tab
+  htmltools::img(src = 'img/logo/LogoIcon.png', height = "40px")
+),
+
 
     # Right Sidebar
     rightSidebarIcon = "bars",
@@ -32,9 +35,11 @@ AppHeaderUI <- if (packageVersion('shinydashboardPlus') < package_version("1.0.0
     widgetUI,
 
     # Branding
-    title = htmltools::a(href = '#top',
-      htmltools::img(src = 'img/logo/LogoIcon.png')
-    ),
+title = htmltools::a(
+  href = "https://tamu-insidertrading.streamlit.app/",  # <-- Replace this with your real URL
+  target = "_blank",  # Opens in new tab
+  htmltools::img(src = 'img/logo/LogoIcon.png', height = "40px")
+),
 
     # Right Sidebar
     controlbarIcon = "bars",

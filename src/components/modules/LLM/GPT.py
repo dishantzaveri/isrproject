@@ -13,7 +13,7 @@ from yahoo_fin import news
 CHATGPT_MODEL = 'gpt-3.5-turbo'
 CHATGPT_API_KEY = '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'
 NEWS_API_KEY = [
-  'EyPg9DD2IXsEh4D6tZBEGXeJ1j1EgY6L'
+  'MjtcHnAfQPMtCVn8ugLX9TaPM3hDKxo8'
 ][0]
 client = openai.OpenAI(api_key=CHATGPT_API_KEY)
 

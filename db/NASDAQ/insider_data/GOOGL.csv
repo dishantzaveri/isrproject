@@ -1,45 +1,135 @@
 Insider Trading,Relationship,Date,Transaction,Cost,Shares,Value ($),Shares Total,SEC Form 4
-ARNOLD FRANCES,Director,2022-07-29,Sale,116.44,"1,230","143,219","9,230",Jul 29 05:23 PM
-MATHER ANN,Director,2022-07-25,Sale,108.94,300,"32,682","11,360",Jul 26 08:21 PM
-HENNESSY JOHN L,Director,2022-07-11,Sale,2337.13,75,"175,285",233,Jul 11 07:25 PM
-Schindler Philipp,"SVP, Chief Business Officer",2022-07-05,Sale,2182.62,"3,834","8,368,180","12,676",Jul 06 01:06 PM
-RAGHAVAN PRABHAKAR,Senior Vice President,2022-07-01,Sale,2166.74,"1,109","2,402,915","1,608",Jul 01 07:52 PM
-O'Toole Amie Thuener,"VP, Chief Accounting Officer",2022-07-01,Sale,2166.74,42,"91,003","1,192",Jul 01 07:02 PM
-MATHER ANN,Director,2022-06-27,Sale,2383.32,20,"47,666",565,Jun 29 08:11 PM
-HENNESSY JOHN L,Director,2022-06-09,Sale,2348.39,33,"77,497",78,Jun 13 07:05 PM
-HENNESSY JOHN L,Director,2022-06-09,Sale,2346.81,42,"98,566","1,927",Jun 13 07:00 PM
-O'Toole Amie Thuener,"VP, Chief Accounting Officer",2022-06-01,Sale,2298.63,42,"96,542","1,181",Jun 02 07:02 PM
-MATHER ANN,Director,2022-05-25,Sale,2102.84,21,"44,160",565,May 27 06:10 PM
-"GV 2021 GP, L.L.C.",Member of 10% Group,2022-05-24,Buy,33.72,"13,528","456,149","593,402",May 25 06:14 PM
-"GV 2021 GP, L.L.C.",Member of 10% Group,2022-05-11,Buy,34.71,"76,136","2,642,642","555,831",May 12 06:44 PM
-"GV 2021 GP, L.L.C.",Member of 10% Group,2022-05-10,Buy,34.65,"255,647","8,858,075","479,695",May 12 06:44 PM
-HENNESSY JOHN L,Director,2022-05-09,Sale,2280.98,31,"70,710",265,May 10 08:36 PM
-HENNESSY JOHN L,Director,2022-05-09,Sale,2270.9,44,"99,919","1,969",May 10 08:30 PM
-RAGHAVAN PRABHAKAR,Senior Vice President,2022-05-03,Sale,2335.3,490,"1,144,297",497,May 04 05:46 PM
-O'Toole Amie Thuener,"VP, Chief Accounting Officer",2022-05-03,Sale,2335.3,42,"98,083","1,170",May 04 05:28 PM
-Page Lawrence,Director,2022-04-19,Sale,2611.38,"1,956","5,107,853","19,513,614",Apr 21 08:49 PM
-Page Lawrence,Director,2022-04-19,Sale,2590.79,"11,932","30,913,302","19,515,570",Apr 21 08:42 PM
-Page Lawrence,Director,2022-04-19,Sale,2602.65,758,"1,972,808",0,Apr 21 08:41 PM
-Page Lawrence,Director,2022-04-19,Sale,2582.86,"13,130","33,912,961",758,Apr 21 08:40 PM
-Page Lawrence,Director,2022-04-18,Sale,2574.16,100,"257,416","19,527,502",Apr 20 06:01 PM
-Page Lawrence,Director,2022-04-18,Sale,2553.5,"13,789","35,210,245","19,527,602",Apr 20 06:00 PM
-Page Lawrence,Director,2022-04-18,Sale,2545.46,"13,889","35,353,875",0,Apr 20 05:56 PM
-Page Lawrence,Director,2022-04-14,Sale,2583.5,"1,700","4,391,951",0,Apr 18 09:00 PM
-Page Lawrence,Director,2022-04-14,Sale,2552.04,"12,189","31,106,850","1,700",Apr 18 08:57 PM
-Page Lawrence,Director,2022-04-14,Sale,2593.2,"1,200","3,111,839","19,541,391",Apr 18 08:53 PM
-Page Lawrence,Director,2022-04-14,Sale,2560.86,"12,689","32,494,785","19,542,591",Apr 18 08:43 PM
-Sergey Brin,Director,2022-04-13,Sale,2600.32,"2,710","7,046,878",0,Apr 15 09:39 PM
-Sergey Brin,Director,2022-04-13,Sale,2578.54,"11,178","28,822,950","2,710",Apr 15 09:37 PM
-Sergey Brin,Director,2022-04-13,Sale,2609.21,"1,276","3,329,356","18,569,765",Apr 15 09:36 PM
-Sergey Brin,Director,2022-04-13,Sale,2590.52,"12,612","32,671,681","18,571,041",Apr 15 09:35 PM
-Sergey Brin,Director,2022-04-12,Sale,2601.9,"6,261","16,290,519",0,Apr 14 06:27 PM
-Sergey Brin,Director,2022-04-12,Sale,2560.91,"7,628","19,534,643","6,261",Apr 14 06:23 PM
-Sergey Brin,Director,2022-04-12,Sale,2623.06,"5,100","13,377,609","18,583,653",Apr 14 04:52 PM
-Sergey Brin,Director,2022-04-12,Sale,2581.38,"8,789","22,687,792","18,588,753",Apr 14 04:48 PM
-Sergey Brin,Director,2022-04-11,Sale,2632.28,"2,639","6,946,576",0,Apr 12 09:52 PM
-Sergey Brin,Director,2022-04-11,Sale,2648.31,"2,300","6,091,104","18,597,542",Apr 12 09:49 PM
-Sergey Brin,Director,2022-04-11,Sale,2594.59,"11,250","29,189,085","2,639",Apr 12 09:47 PM
-Sergey Brin,Director,2022-04-11,Sale,2612.0,"11,589","30,270,520","18,599,842",Apr 12 09:20 PM
-"GV 2016 GP, L.L.C.",10% Owner,2022-04-11,Sale,11.16,"544,249","6,074,458",0,Apr 12 06:12 PM
-HENNESSY JOHN L,Director,2022-04-11,Sale,2618.42,31,"81,171",296,Apr 13 08:58 PM
-HENNESSY JOHN L,Director,2022-04-11,Sale,2574.94,94,"242,044","2,013",Apr 13 08:56 PM
+Hennessy John L.,Dir,2025-04-14,Sale,161.90,200,-32379,36301,Apr 14 05:16 PM
+Pichai Sundar,CEO,2025-04-02,Sale,158.56,32500,-5153133,3169425,Apr 04 04:49 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2025-04-01,Sale,155.33,673,-104537,66906,Apr 01 05:54 PM
+Arnold Frances,Dir,2025-03-28,Sale,162.42,111,-18029,21412,Mar 31 04:33 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2025-03-27,Sale,166.84,11764,-1962700,194764,Mar 27 05:43 PM
+Hennessy John L,Dir,2025-03-13,Sale,165.53,200,-33107,36493,Mar 13 06:49 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2025-03-03,Sale,173.47,1374,-238348,48340,Mar 03 06:47 PM
+Arnold Frances,Dir,2025-02-28,Sale,170.30,121,-20606,21519,Feb 28 01:23 PM
+Porat Ruth,"Pres, Chief Invs. Officer",2025-02-21,Sale,183.48,17690,-3245778,2076753,Feb 21 07:48 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2025-02-18,Sale,185.51,17690,-3281684,216769,Feb 20 12:12 PM
+Shriram Kavitark Ram,Dir,2025-02-18,Sale,184.88,53066,-9810567,4850987,Feb 19 01:22 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2025-02-18,Sale,187.43,2824,-529302,51104,Feb 19 11:11 AM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2025-02-03,Sale,202.08,1340,-270787,53928,Feb 03 04:57 PM
+Shriram Kavitark Ram,Dir,2025-01-31,Sale,205.00,26000,-5330000,4904053,Jan 31 05:50 PM
+Arnold Frances,Dir,2025-01-30,Sale,200.00,110,-22000,21640,Jan 30 02:53 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2025-01-15,Sale,194.32,2834,-550703,56692,Jan 15 06:45 PM
+Hennessy John L,Dir,2025-01-13,Sale,189.80,1500,-284693,36798,Jan 13 07:57 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2025-01-02,Sale,191.55,1368,-262040,59526,Jan 03 02:29 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2024-12-30,Sale,192.62,16820,-3239916,216768,Jan 02 03:19 PM
+Arnold Frances,Dir,2024-12-31,Sale,192.49,111,-21366,21749,Jan 02 02:37 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-12-16,Sale,197.55,2834,-559850,53997,Dec 17 09:20 PM
+Hennessy John L,Dir,2024-12-12,Sale,194.22,1500,-291336,38185,Dec 13 06:18 PM
+Shriram Kavitark Ram,Dir,2024-12-10,Sale,185.02,72500,-13413721,4930046,Dec 10 08:49 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-12-02,Sale,170.41,1367,-232950,65091,Dec 02 06:19 PM
+Arnold Frances,Dir,2024-11-29,Sale,169.98,111,-18868,21854,Dec 02 05:39 PM
+Pichai Sundar,CEO,2024-11-20,Sale,176.67,22500,-3975018,2662156,Nov 21 04:55 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-11-15,Sale,175.86,2835,-498563,67852,Nov 18 04:16 PM
+Hennessy John L,Dir,2024-11-12,Sale,180.75,1500,-271125,39685,Nov 12 05:18 PM
+Shriram Kavitark Ram,Dir,2024-11-07,Sale,177.41,19500,-3459495,5002546,Nov 07 06:00 PM
+Pichai Sundar,CEO,2024-11-06,Sale,177.37,22500,-3990704,2684656,Nov 06 06:54 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-11-01,Sale,171.42,1367,-234331,70687,Nov 04 09:01 PM
+Arnold Frances,Dir,2024-11-04,Sale,171.06,441,-75437,21966,Nov 04 08:50 PM
+Shriram Kavitark Ram,Dir,2024-10-30,Sale,180.78,19500,-3525210,5352512,Nov 01 12:13 PM
+Pichai Sundar,CEO,2024-10-16,Sale,166.30,22500,-3741762,2707156,Oct 16 04:59 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-10-15,Sale,167.23,2834,-473930,73447,Oct 15 05:32 PM
+Hennessy John L,Dir,2024-10-14,Sale,164.96,1500,-247432,41347,Oct 15 05:16 PM
+Pichai Sundar,CEO,2024-10-02,Sale,167.07,22500,-3759083,2729656,Oct 02 04:56 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-10-01,Sale,168.84,1367,-230804,76281,Oct 02 04:31 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2024-09-27,Sale,165.47,16802,-2780294,250568,Sep 30 06:36 PM
+Hennessy John L,Dir,2024-09-23,Sale,165.00,700,-115500,42686,Sep 24 05:56 PM
+Pichai Sundar,CEO,2024-09-18,Sale,160.63,22500,-3614164,2789793,Sep 18 07:11 PM
+Hennessy John L,Dir,2024-09-12,Sale,153.75,800,-123003,43375,Sep 16 01:52 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-09-10,Sale,151.53,2835,-429588,78990,Sep 10 06:43 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2024-09-03,Sale,160.35,21467,-3442277,284249,Sep 05 06:20 PM
+Pichai Sundar,CEO,2024-09-04,Sale,158.68,22500,-3570248,2811731,Sep 05 02:41 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-09-03,Sale,160.44,682,-109420,81825,Sep 03 05:46 PM
+Pichai Sundar,CEO,2024-08-21,Sale,167.66,22500,-3772441,2834231,Aug 21 06:51 PM
+Hennessy John L,Dir,2024-08-16,Sale,165.00,700,-115500,44174,Aug 19 08:59 PM
+Raghavan Prabhakar,SVP,2024-08-15,Sale,162.60,34257,-5570218,567709,Aug 16 05:09 PM
+Hennessy John L,Dir,2024-08-12,Sale,163.03,800,-130421,44874,Aug 12 09:34 PM
+Pichai Sundar,CEO,2024-08-07,Sale,162.35,22500,-3652772,2856731,Aug 07 07:13 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-08-02,Sale,168.00,682,-114576,83899,Aug 02 08:02 PM
+Pichai Sundar,CEO,2024-07-17,Sale,182.84,22500,-4113803,2879231,Jul 18 05:05 PM
+Hennessy John L,Dir,2024-07-12,Sale,185.85,1500,-278775,45674,Jul 16 07:08 PM
+Pichai Sundar,CEO,2024-07-03,Sale,186.74,22500,-4201748,2901731,Jul 03 04:31 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-07-02,Sale,183.47,682,-125127,85973,Jul 02 07:00 PM
+Raghavan Prabhakar,SVP,2024-07-01,Sale,183.99,3262,-600172,601966,Jul 02 01:53 PM
+Pichai Sundar,CEO,2024-06-20,Sale,177.40,22500,-3991479,2961821,Jun 21 04:26 PM
+Hennessy John L,Dir,2024-06-12,Sale,177.92,1500,-266885,44378,Jun 12 08:07 PM
+Pichai Sundar,CEO,2024-06-05,Sale,176.58,22500,-3973122,2983739,Jun 05 06:33 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-06-03,Sale,173.86,682,-118573,87992,Jun 03 05:47 PM
+Pichai Sundar,CEO,2024-05-15,Sale,173.22,22500,-3897497,3006239,May 15 07:24 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-05-02,Sale,166.67,682,-113669,90064,May 14 01:00 PM
+Hennessy John L,Dir,2024-05-13,Sale,168.08,1500,-252123,45878,May 13 07:14 PM
+Pichai Sundar,CEO,2024-05-01,Sale,166.81,22500,-3753101,3028739,May 01 07:29 PM
+Arnold Frances,Dir,2024-04-30,Sale,167.38,80,-13390,20441,Apr 30 05:59 PM
+Hennessy John L,Dir,2024-04-26,Sale,175.76,2100,-369096,47378,Apr 26 06:53 PM
+Pichai Sundar,CEO,2024-04-17,Sale,157.41,22500,-3541763,3051239,Apr 17 07:30 PM
+Hennessy John L,Dir,2024-04-12,Sale,159.56,800,-127648,49478,Apr 15 08:17 PM
+Pichai Sundar,CEO,2024-04-03,Sale,155.67,22500,-3502640,3073741,Apr 04 03:07 PM
+Raghavan Prabhakar,SVP,2024-04-01,Sale,155.97,3258,-508149,527943,Apr 02 08:10 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-04-02,Sale,154.79,682,-105567,92819,Apr 02 05:58 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2024-03-27,Sale,151.19,12084,-1826930,213927,Mar 29 01:33 PM
+Arnold Frances,Dir,2024-03-28,Sale,152.00,90,-13680,20521,Mar 29 11:53 AM
+Pichai Sundar,CEO,2024-03-20,Sale,148.78,22500,-3347580,3132800,Mar 20 06:41 PM
+Hennessy John L,Dir,2024-03-18,Sale,149.50,500,-74750,50278,Mar 19 06:32 PM
+Hennessy John L,Dir,2024-03-12,Sale,139.51,300,-41853,50778,Mar 12 05:22 PM
+Porat Ruth,"Pres, CFO",2024-03-08,Sale,137.22,48077,-6597102,2051142,Mar 08 05:40 PM
+Pichai Sundar,CEO,2024-03-06,Sale,132.70,22500,-2985671,3155300,Mar 06 08:07 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-03-04,Sale,136.49,682,-93086,70597,Mar 04 06:38 PM
+Arnold Frances,Dir,2024-02-29,Sale,138.22,100,-13822,20611,Feb 29 09:48 PM
+Pichai Sundar,CEO,2024-02-21,Sale,143.09,22500,-3219404,3177800,Feb 22 05:57 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2024-02-20,Sale,142.20,48076,-6836557,238331,Feb 22 05:09 PM
+Hennessy John L,Dir,2024-02-12,Sale,149.73,800,-119787,51078,Feb 13 06:01 PM
+Pichai Sundar,CEO,2024-02-07,Sale,146.29,22500,-3291549,3200300,Feb 08 06:38 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-02-01,Sale,143.59,660,-94769,72670,Feb 01 07:13 PM
+Arnold Frances,Dir,2024-01-30,Sale,154.06,230,-35434,20711,Jan 30 06:32 PM
+Pichai Sundar,CEO,2024-01-17,Sale,142.14,22500,-3198219,3222800,Jan 17 05:51 PM
+Hennessy John L,Dir,2024-01-11,Sale,145.00,2400,-348000,49855,Jan 12 02:13 PM
+Hennessy John L,Dir,2024-01-10,Sale,143.49,200,-28698,54278,Jan 10 08:25 PM
+Pichai Sundar,CEO,2024-01-03,Sale,140.11,22500,-3152459,3245300,Jan 04 01:37 PM
+Raghavan Prabhakar,SVP,2024-01-02,Sale,139.10,16088,-2237774,476306,Jan 03 11:08 AM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2024-01-02,Sale,139.61,425,-59334,74763,Jan 02 04:49 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2023-12-28,Sale,141.40,28281,-3999004,238330,Dec 29 08:06 PM
+Arnold Frances,Dir,2023-12-29,Sale,140.51,240,-33722,20941,Dec 29 07:51 PM
+Pichai Sundar,CEO,2023-12-20,Sale,141.43,22500,-3182085,3304678,Dec 21 05:11 PM
+Hennessy John L,Dir,2023-12-11,Sale,133.97,200,-26794,54478,Dec 11 05:48 PM
+Pichai Sundar,CEO,2023-12-06,Sale,132.17,22500,-2973784,3327178,Dec 08 04:14 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2023-12-01,Sale,133.32,420,-55994,76024,Dec 01 05:06 PM
+Arnold Frances,Dir,2023-11-30,Sale,136.40,230,-31372,21181,Nov 30 05:21 PM
+Hennessy John L,Dir,2023-11-10,Sale,132.92,200,-26583,54678,Nov 14 02:54 PM
+Shriram Kavitark Ram,Dir,2023-11-07,Sale,131.09,150000,-19663143,4708664,Nov 09 03:21 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2023-11-03,Sale,129.08,425,-54859,77270,Nov 03 04:52 PM
+Arnold Frances,Dir,2023-10-30,Sale,124.36,250,-31090,21411,Oct 30 07:09 PM
+Mather Ann,Dir,2023-10-25,Sale,129.82,260,-33753,28164,Oct 26 07:38 PM
+Hennessy John L,Dir,2023-10-10,Sale,139.93,200,-27986,54878,Oct 10 05:15 PM
+Raghavan Prabhakar,SVP,2023-10-02,Sale,133.82,16083,-2152151,532971,Oct 04 05:41 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2023-10-02,Sale,132.09,420,-55478,78531,Oct 02 07:06 PM
+Mather Ann,Dir,2023-10-02,Sale,132.09,180,-23776,28421,Oct 02 06:54 PM
+Arnold Frances,Dir,2023-09-28,Sale,130.85,240,-31404,21661,Sep 28 03:23 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2023-09-27,Sale,130.54,35799,-4673130,203715,Sep 27 08:19 PM
+Mather Ann,Dir,2023-09-25,Sale,130.89,220,-28796,28601,Sep 27 04:36 PM
+Hennessy John L,Dir,2023-09-11,Sale,137.30,200,-27460,54693,Sep 11 09:34 PM
+Walker John Kent,"Pres, Global Affairs, CLO",2023-09-05,Sale,136.51,42900,-5856144,372818,Sep 07 05:56 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2023-09-05,Sale,136.28,3749,-510914,79777,Sep 05 06:19 PM
+Arnold Frances,Dir,2023-08-30,Sale,135.56,230,-31179,21901,Sep 01 09:27 PM
+Mather Ann,Dir,2023-08-25,Sale,130.14,220,-28631,28821,Aug 29 04:14 PM
+Hennessy John L,Dir,2023-08-10,Sale,131.14,200,-26227,55278,Aug 10 05:17 PM
+Arnold Frances,Dir,2023-07-28,Sale,130.95,230,-30119,22131,Jul 28 07:28 PM
+Mather Ann,Dir,2023-07-25,Sale,121.75,220,-26785,29041,Jul 27 05:00 PM
+Shriram Kavitark Ram,Dir,2023-07-10,Sale,118.42,150000,-17762727,5197583,Jul 14 07:04 PM
+Hennessy John L,Dir,2023-07-13,Sale,125.00,200,-25000,55478,Jul 13 06:37 PM
+Raghavan Prabhakar,SVP,2023-07-03,Sale,120.31,16083,-1934990,627392,Jul 05 02:23 PM
+Arnold Frances,Dir,2023-06-29,Sale,120.02,240,-28805,19520,Jun 29 06:51 PM
+Mather Ann,Dir,2023-06-26,Sale,121.42,380,-46140,26420,Jun 28 01:54 PM
+Hennessy John L,Dir,2023-06-13,Sale,125.65,200,-25130,51620,Jun 13 05:14 PM
+Mather Ann,Dir,2023-06-02,Sale,125.31,7640,-957370,4700,Jun 07 06:11 PM
+Mather Ann,Dir,2023-06-02,Sale,125.33,9540,-1195633,24900,Jun 02 07:02 PM
+Arnold Frances,Dir,2023-05-31,Sale,123.73,240,-29695,19760,May 31 04:30 PM
+Arnold Frances,Dir,2023-05-25,Sale,125.25,950,-118988,20000,May 26 06:23 PM
+Hennessy John L,Dir,2023-05-19,Sale,125.00,800,-100000,51820,May 22 11:54 AM
+Shriram Kavitark Ram,Dir,2023-05-16,Sale,120.01,150000,-18000960,5335140,May 18 12:04 PM
+Shriram Kavitark Ram,Dir,2023-05-05,Sale,105.04,75000,-7878321,5147460,May 05 04:55 PM
+O'Toole Amie Thuener,"VP, Chief Accounting Officer",2023-05-02,Sale,107.51,637,-68484,86850,May 02 05:50 PM

@@ -73,6 +73,72 @@ install.packages(c(
   "reticulate", "plotly", "dplyr", "readr"
 ))
 
+---
+
+## 🧪 Example Use Case
+
+- **Input**: `AAPL` on `2024-04-01`  
+- **Detected**: Abnormal price surge  
+- **Reasoning**: GPT summarized pre-trade news showing a private deal announcement  
+- **Verdict**: Possible insider signal flagged  
+
+---
+
+## 🧬 Features
+
+- 🔍 **Stock anomaly detection** using Meta Prophet  
+- 🤖 **AI reasoning** using GPT-3.5  
+- 📰 **News context analysis**  
+- 🔗 **Insider–Company relationship graphs** via `visNetwork`  
+- 📊 **Interactive dashboard** (Shiny)  
+- ☁️ **Deployable to ShinyApps.io**  
+
+---
+
+## 👨‍👩‍👧‍👦 Contributors
+
+Built with dedication by **Team FOXTROT**:
+
+- **Dishant Zaveri**  
+- **Navya Unnikrishnan**  
+- **Rahul Baid**  
+- **Khushi Patel**  
+
+💡 Ideation | 📊 Modeling | 🖼️ UI/UX | 🤖 AI Integration | 🌐 Deployment
+
+---
+
+## 📄 References
+
+- [OpenAI GPT-3.5 API](https://platform.openai.com/)  
+- [Facebook Prophet Forecasting](https://facebook.github.io/prophet/)  
+- [Yahoo Finance API](https://theautomatic.net/yahoo_fin-documentation/)  
+- [SGX Insider Trading Guidelines](https://www.sgx.com/regulation)
+
+---
+
+## 📬 Contact
+
+- Email: [dishant.zaveri@tamu.edu](mailto:dishant.zaveri@tamu.edu)  
+- GitHub: [dishantzaveri](https://github.com/dishantzaveri)
+
+---
+
+## 📌 License
+
+This project is for **educational and academic use only**.  
+Please **credit the authors** when reusing or referencing.
+
+---
+
+## ✅ Future Work
+
+- 🔔 Add alert system for real-time trade monitoring  
+- 📄 Integrate SEC EDGAR filings  
+- 🌎 Expand to multi-market (e.g., NYSE, SGX, NSE)  
+- 🔄 Auto-refreshing visual dashboards  
+
+
 ## 🧭 Project Structure
 
 ```plaintext

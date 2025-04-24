@@ -31,6 +31,48 @@ A full-stack investigative dashboard and analytics pipeline for detecting **pote
 
 ---
 
+A powerful AI-enabled platform to investigate potential insider trading through stock anomaly detection, contextual news analysis, and relationship mapping. Built with **R (Shiny)** for UI, **Python (Prophet + OpenAI)** for intelligence, and enhanced with interactive network visualizations and streaming news integrations.
+
+---
+
+## 🧠 How It Works – AI + Prophet Forecasting Pipeline
+
+1. **Takes input**: Suspicious stock trade details (Company + Date).
+2. **Fetches stock prices** from Yahoo Finance historical data.
+3. **Applies Prophet Forecasting** to detect abnormal price jumps/dips.
+4. **If anomaly is detected**:
+   - Scrapes news articles before the trade date.
+   - Passes them to GPT-4.0 to investigate possible insider behavior.
+5. **Outputs**:
+   - An **AI-generated natural language report**
+   - A **visual graph of insider–company relationships**
+   - A **data table of suspicious trade details**
+
+---
+
+## ⚙️ Setup Instructions
+
+### 🔧 Requirements
+
+- **R Version**: ≥ 4.2  
+- **Python Version**: ≥ 3.10  
+- **Required Packages**:
+
+| Language | Packages |
+|----------|----------|
+| R        | shiny, visNetwork, DT, shinyWidgets, reticulate, dplyr, readr, plotly |
+| Python   | prophet, openai, yahoo_fin, pandas, numpy, requests, tqdm |
+
+---
+
+### 📦 R Setup
+
+
+install.packages(c(
+  "shiny", "shinyWidgets", "visNetwork", "DT", 
+  "reticulate", "plotly", "dplyr", "readr"
+))
+
 ## 🧭 Project Structure
 
 ```plaintext
